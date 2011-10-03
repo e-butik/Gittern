@@ -98,4 +98,23 @@ class GaufretteTransport implements Transportable
   {
     return $this->filesystem->read('index');
   }
+
+  /**
+   * @author Magnus Nordlander
+   **/
+  public function putIndexData($data)
+  {
+    $this->filesystem->write('index', $data, true);
+  }
+
+  /**
+   * @author Magnus Nordlander
+   **/
+  public function putObject($sha, $data)
+  {
+    $first = substr($sha, 0, 2);
+    $last = substr($sha, 2);
+
+    $this->filesystem->write('objects/'.$first.'/'.$last, $data, true);
+  }
 }

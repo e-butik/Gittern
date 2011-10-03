@@ -24,18 +24,27 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     $repo->setHydrator('commit', new Hydrator\CommitHydrator($repo));
     $repo->setHydrator('tree', new Hydrator\TreeHydrator($repo));
     $repo->setHydrator('blob', new Hydrator\BlobHydrator($repo));
+    $repo->setDesiccator('blob', new Desiccator\BlobDesiccator());
     $repo->setIndexHydrator(new Hydrator\IndexHydrator($repo));
+    $repo->setIndexDesiccator(new Desiccator\IndexDesiccator());
     $repo->setTransport($transport);
 
-    $index = $repo->getIndex();
+/*    $blob = new GitObject\Blob();
 
-    $desiccator = new Desiccator\IndexDesiccator();
-    $filesystem->write('index.tst', $desiccator->desiccate($index), true);
+    $blob->setContents("Foobar..");
 
-/*    $git_adapter = new GitternIndexAdapter($repo);
+    $repo->desiccateGitObject($blob);
+
+    var_dump($blob);
+
+    $repo->flush();*/
+
+    $git_adapter = new GitternIndexAdapter($repo);
     $git_fs = new Filesystem($git_adapter);
 
-    var_dump($git_fs->get('klarnaaddr.php')->getContent());*/
+    $git_fs->write('foobar.txt', 'Testar...');
+
+//    $git_fs->rename('klarnaaddr.php', 'klarnafoo.php');
 
 /*    $git_adapter = new GitternReadOnlyAdapter($repo, 'master');
     //$git_adapter = new Local('/Users/magnus/Developer/KlarnaPHP/');

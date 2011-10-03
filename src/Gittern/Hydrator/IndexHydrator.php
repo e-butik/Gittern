@@ -95,29 +95,16 @@ class IndexHydrator
     }
 
     $extended_contents_stop = $reader->getOffset();
-
     $reader->setOffset(0);
-    $hash = hash_init('sha1');
-    hash_update($hash, $reader->readString8($extended_contents_stop));
-    $calculated_sha = hash_final($hash, false);
-//    $calculated_sha = sha1();
+
+    $calculated_sha = sha1($reader->read($extended_contents_stop));
 
     $checksum = $reader->readHHex(20);
 
-    var_dump($calculated_sha);
-    var_dump($checksum);
-
-/*//    $reader->setOffset($extended_contents_start);
-    $reader->setOffset(0);
-
-    $length = $extended_contents_stop;//-$extended_contents_start;
-
-    $calculated_sha = sha1($reader->readString8($length));
-
     if ($checksum != $calculated_sha)
     {
-      var_dump("Checksum fail");
-    }*/
+      throw new \Exception("Index checksum does not match");
+    }
 
     return $index;
   }

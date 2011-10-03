@@ -30,7 +30,15 @@ class IndexDesiccator
 
     $contents_offset = $writer->getOffset();
 
-    // usort $entries
+    usort($entries, function($a, $b)
+    {
+      $cmp = strcmp($a->getName(), $b->getName());
+      if ($cmp == 0) 
+      {
+        return ($a->getStage() - $b->getStage());
+      }
+      return $cmp;
+    });
 
     foreach ($entries as $entry) 
     {
@@ -59,9 +67,7 @@ class IndexDesiccator
       $writer->writeString8($entry->getName(), strlen($entry->getName())+1+$rest_length);
     }
 
-    $contents = substr($writer->toString(), $contents_offset);
-
-    $writer->writeHHex(sha1($contents));
+    $writer->writeHHex(sha1($writer->toString()));
 
     return $writer->toString();
   }

@@ -10,15 +10,26 @@ use Gaufrette\Adapter;
 class GitternIndexAdapter implements Adapter
 {
   protected $repo;
-  protected $index;
+  protected $autoflush = true;
 
   /**
    * @author Magnus Nordlander
    **/
-  public function __construct(Repository $repo)
+  public function __construct(Repository $repo, $autoflush = true)
   {
     $this->repo = $repo;
-    $this->index = $repo->getIndex();
+    $this->autoflush = $autoflush;
+  }
+
+  /**
+   * @author Magnus Nordlander
+   **/
+  public function flushIfSupposedTo()
+  {
+    if ($this->autoflush)
+    {
+      $this->repo->flush();      
+    }
   }
 
   /**
@@ -30,7 +41,7 @@ class GitternIndexAdapter implements Adapter
    */
   public function read($key)
   {
-    $entry = $this->index->getEntryNamed($key);
+    $entry = $this->repo->getIndex()->getEntryNamed($key);
 
     if ($entry)
     {
@@ -50,9 +61,33 @@ class GitternIndexAdapter implements Adapter
    *
    * @throws RuntimeException on failure
    */
-  public function write($key, $content)
+  public function write($key, $content, array $metadata = null)
   {
-    throw new \RuntimeException("This adapter is read-only.");
+    $blob = new GitObject\Blob();
+
+    $blob->setContents($content);
+
+    $this->repo->desiccateGitObject($blob);
+
+    $entry = new IndexEntry();
+
+    $entry->setCtime(time().".0");
+    $entry->setMtime(time().".0");
+    $entry->setDev(0);
+    $entry->setInode(0);
+    $entry->setMode(0100644);
+    $entry->setUid(0);
+    $entry->setGid(0);
+    $entry->setFileSize(strlen($content));
+
+    $entry->setBlob($blob);
+
+    $entry->setName($key);
+    $entry->setStage(0);
+
+    $this->repo->getIndex()->addEntry($entry);
+
+    $this->flushIfSupposedTo();
   }
 
 
@@ -75,7 +110,7 @@ class GitternIndexAdapter implements Adapter
    */
   public function keys()
   {
-    return $this->index->getEntryNames();
+    return $this->repo->getIndex()->getEntryNames();
   }
 
   /**
@@ -87,7 +122,7 @@ class GitternIndexAdapter implements Adapter
    */
   public function mtime($key)
   {
-    $entry = $this->index->getEntryNamed($key);
+    $entry = $this->repo->getIndex()->getEntryNamed($key);
 
     if ($entry)
     {
@@ -119,7 +154,8 @@ class GitternIndexAdapter implements Adapter
    */
   public function delete($key)
   {
-    throw new \RuntimeException("This adapter is read-only.");
+    $this->repo->getIndex()->removeEntryNamed($key);
+    $this->flushIfSupposedTo();
   }
 
   /**
@@ -132,6 +168,22 @@ class GitternIndexAdapter implements Adapter
    */
   public function rename($key, $new)
   {
-    throw new \RuntimeException("This adapter is read-only.");
+    $entry = $this->repo->getIndex()->getEntryNamed($key);
+
+    if ($entry)
+    {
+      $entry->setName($new);
+      $this->repo->getIndex()->removeEntryNamed($key);
+      $this->repo->getIndex()->addEntry($entry);
+      $this->flushIfSupposedTo();
+      return;
+    }
+
+    throw new \RuntimeException(sprintf('Could not read the \'%s\' file.', $key));
+  }
+
+  public function supportsMetadata()
+  {
+    return true;
   }
 }

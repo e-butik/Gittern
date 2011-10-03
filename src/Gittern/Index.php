@@ -42,6 +42,19 @@ class Index
   /**
    * @author Magnus Nordlander
    **/
+  public function removeEntryNamed($name)
+  {
+    if (isset($this->entries[$name]))
+    {
+      unset($this->entries[$name]);
+      return;
+    }
+    throw new \OutOfBoundsException('No entry named '.$name);
+  }
+
+  /**
+   * @author Magnus Nordlander
+   **/
   public function getEntryNames()
   {
     return array_keys($this->entries);
