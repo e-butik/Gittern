@@ -1,0 +1,9 @@
+[submodule "vendor/gaufrette"]
+	path = vendor/gaufrette
+	url = https://github.com/knplabs/Gaufrette.git
+[submodule "vendor/symfony-classloader/src/Symfony/Component/ClassLoader"]
+	path = vendor/symfony-classloader/src/Symfony/Component/ClassLoader
+	url = https://github.com/symfony/ClassLoader.git
+[submodule "vendor/php-reader"]
+	path = vendor/php-reader
+	url = git://github.com/e-butik/php-reader.git
