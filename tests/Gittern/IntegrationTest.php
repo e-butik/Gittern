@@ -15,41 +15,44 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
    **/
   public function testFetchTree()
   {
-    $adapter = new Local('/Users/magnus/Developer/KlarnaPHP/.git');
-    $filesystem = new Filesystem($adapter);
+    $git_fs = new Filesystem(new Local(__DIR__.'/../Testrepo.git'));
 
-    $transport = new Transport\GaufretteTransport($filesystem);
+    $transport = new Transport\GaufretteTransport($git_fs);
 
     $repo = new Repository;
     $repo->setHydrator('commit', new Hydrator\CommitHydrator($repo));
     $repo->setHydrator('tree', new Hydrator\TreeHydrator($repo));
     $repo->setHydrator('blob', new Hydrator\BlobHydrator($repo));
     $repo->setDesiccator('blob', new Desiccator\BlobDesiccator());
+    $repo->setDesiccator('tree', new Desiccator\TreeDesiccator());
+    $repo->setDesiccator('commit', new Desiccator\CommitDesiccator());
     $repo->setIndexHydrator(new Hydrator\IndexHydrator($repo));
     $repo->setIndexDesiccator(new Desiccator\IndexDesiccator());
     $repo->setTransport($transport);
 
-/*    $blob = new GitObject\Blob();
+    $git_index_adapter = new GitternIndexAdapter($repo, false);
+    $git_index_fs = new Filesystem($git_index_adapter);
 
-    $blob->setContents("Foobar..");
+    $test_data_fs = new Filesystem(new Local(__DIR__.'/../Unversioned test data/'));
 
-    $repo->desiccateGitObject($blob);
+    foreach ($test_data_fs->keys() as $key) 
+    {
+      $git_index_fs->write($key, $test_data_fs->read($key));
+    }
 
-    var_dump($blob);
+    $tree = $repo->getIndex()->createTree();
 
-    $repo->flush();*/
+    $commit = new GitObject\Commit();
+    $commit->setTree($tree);
+    $commit->setAuthor(new GitObject\User("Magnus Nordlander", "magnus@nordlander.se"));
+    $commit->setAuthorTime(new \DateTime());
+    $commit->setCommitter(new GitObject\User("Magnus Nordlander", "magnus@nordlander.se"));
+    $commit->setCommitTime(new \DateTime());
+    $commit->setMessage("Initial commit");
 
-    $git_adapter = new GitternIndexAdapter($repo);
-    $git_fs = new Filesystem($git_adapter);
+    $repo->desiccateGitObject($commit);
+    $repo->moveBranch('master', $commit);
 
-    $git_fs->write('foobar.txt', 'Testar...');
-
-//    $git_fs->rename('klarnaaddr.php', 'klarnafoo.php');
-
-/*    $git_adapter = new GitternReadOnlyAdapter($repo, 'master');
-    //$git_adapter = new Local('/Users/magnus/Developer/KlarnaPHP/');
-    $git_fs = new Filesystem($git_adapter);
-
-    var_dump($git_fs->get('klarnaaddr.php')->getContent());*/
+    $repo->flush();
   }
 }

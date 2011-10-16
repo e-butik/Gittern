@@ -16,6 +16,7 @@ class Repository
   protected $index = null;
 
   protected $unflushed_objects = array();
+  protected $branch_moves = array();
 
   protected $transport;
 
@@ -76,6 +77,14 @@ class Repository
     {
       return "blob";
     }
+    if ($object instanceof GitObject\Tree)
+    {
+      return "tree";
+    }
+    if ($object instanceof GitObject\Commit)
+    {
+      return "commit";
+    }
 
     return null;
   }
@@ -95,7 +104,14 @@ class Repository
   {
     if (!$this->index)
     {
-      $this->index = $this->index_hydrator->hydrate($this->transport->getIndexData());
+      if ($this->transport->hasIndexData())
+      {
+        $this->index = $this->index_hydrator->hydrate($this->transport->getIndexData());
+      }
+      else
+      {
+        $this->index = new Index;
+      }
     }
     return $this->index;
   }
@@ -117,7 +133,18 @@ class Repository
     {
       $this->transport->putObject($sha, $data);
     }
+    
     $this->flushIndex();
+
+    foreach ($this->branch_moves as $branch => $commit)
+    {
+      $this->transport->moveBranch($branch, $commit->getSha());
+    }
+  }
+
+  public function moveBranch($branch, GitObject\Commit $commit)
+  {
+    $this->branch_moves[$branch] = $commit;
   }
 
   /**
@@ -130,10 +157,7 @@ class Repository
     return $this->hydrateGitObject($sha, $this->transport->resolveObject($sha));
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
-  public function desiccateGitObject($object)
+  protected function doDesiccation($object)
   {
     $type = $this->getTypeForObject($object);
 
@@ -147,6 +171,37 @@ class Repository
     $object->setSha($sha);
 
     $this->unflushed_objects[$sha] = gzcompress($data, 4);
+  }
+
+  /**
+   * @author Magnus Nordlander
+   **/
+  public function desiccateGitObject($object)
+  {
+    if (!$object->getSha())
+    {
+      if ($object instanceof GitObject\Blob)
+      {
+        $this->doDesiccation($object);
+      }
+      else if ($object instanceof GitObject\Tree)
+      {
+        foreach ($object->getNodes() as $node)
+        {
+          $this->desiccateGitObject($node->getRelatedObject());
+        }
+        $this->doDesiccation($object);
+      }
+      else if ($object instanceof GitObject\Commit)
+      {
+        $this->desiccateGitObject($object->getTree());
+        foreach ($object->getParents() as $parent)
+        {
+          $this->desiccateGitObject($parent);
+        }
+        $this->doDesiccation($object);
+      }
+    }
   }
 
   /**

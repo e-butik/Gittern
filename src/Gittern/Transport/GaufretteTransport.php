@@ -72,6 +72,11 @@ class GaufretteTransport implements Transportable
     return false;
   }
 
+  public function moveBranch($branch, $sha)
+  {
+    $this->filesystem->write('refs/heads/'.$branch, $sha, true);
+  }
+
   /**
    * @author Magnus Nordlander
    **/
@@ -89,6 +94,11 @@ class GaufretteTransport implements Transportable
     {
       // Maybe it's packed?
     }
+  }
+
+  public function hasIndexData()
+  {
+    return $this->filesystem->has('index');
   }
 
   /**

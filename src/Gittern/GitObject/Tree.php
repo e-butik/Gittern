@@ -63,4 +63,9 @@ class Tree implements \IteratorAggregate
   {
     return $this->nodes[$name];
   }
+
+  public function hasNodeNamed($name)
+  {
+    return isset($this->nodes[$name]);
+  }
 }

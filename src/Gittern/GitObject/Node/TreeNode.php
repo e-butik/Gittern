@@ -11,6 +11,11 @@ class TreeNode extends BaseNode
 {
   protected $tree;
 
+  public function __construct()
+  {
+    $this->mode = 040000;
+  }
+
   /**
    * @author Magnus Nordlander
    **/
@@ -29,6 +34,6 @@ class TreeNode extends BaseNode
 
   public function getRelatedObject()
   {
-    return $this->getBlob();
+    return $this->getTree();
   }
 }
