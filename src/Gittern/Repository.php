@@ -138,11 +138,11 @@ class Repository
 
     foreach ($this->branch_moves as $branch => $commit)
     {
-      $this->transport->moveBranch($branch, $commit->getSha());
+      $this->transport->setBranch($branch, $commit->getSha());
     }
   }
 
-  public function moveBranch($branch, GitObject\Commit $commit)
+  public function setBranch($branch, GitObject\Commit $commit)
   {
     $this->branch_moves[$branch] = $commit;
   }
@@ -154,7 +154,16 @@ class Repository
   {
     $sha = $this->transport->resolveTreeish($treeish);
 
-    return $this->hydrateGitObject($sha, $this->transport->resolveObject($sha));
+    $raw_object = $this->transport->resolveRawObject($sha);
+
+    $hydrator = $this->getHydratorForType($raw_object->getType());
+
+    if (!$hydrator)
+    {
+      throw new \RuntimeException("No hydrator for type $type set");
+    }
+
+    return $hydrator->hydrate($sha, $raw_object->getData());
   }
 
   protected function doDesiccation($object)
@@ -202,33 +211,5 @@ class Repository
         $this->doDesiccation($object);
       }
     }
-  }
-
-  /**
-   * @author Magnus Nordlander
-   **/
-  public function hydrateGitObject($sha, $compressed_data)
-  {
-    $uncompressed_data = gzuncompress($compressed_data);
-
-    sscanf($uncompressed_data, "%s %d\0", $type, $length);
-
-    $offset = strlen($type)+strlen($length)+2; //Space and NUL
-
-    if (strlen($uncompressed_data) !== $offset+$length)
-    {
-      throw new \RuntimeException("Length specified in git object header does not match actual length");
-    }
-
-    $data = substr($uncompressed_data, $offset, $length);
-
-    $hydrator = $this->getHydratorForType($type);
-
-    if (!$hydrator)
-    {
-      throw new \RuntimeException("No hydrator for type $type set");
-    }
-
-    return $hydrator->hydrate($sha, $data);
   }
 }

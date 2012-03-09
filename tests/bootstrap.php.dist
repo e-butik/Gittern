@@ -8,6 +8,7 @@ $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
     'Gittern'                      => __DIR__.'/../src',
     'Gaufrette'                    => __DIR__.'/../vendor/gaufrette/src',
+    'org\\bovigo\\vfs'             => __DIR__.'/../vendor/vfsStream/src/main/php',
 ));
 
 $zend_path = __DIR__.'/../vendor/php-reader/src';

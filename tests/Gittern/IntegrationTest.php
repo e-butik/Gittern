@@ -15,9 +15,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
    **/
   public function testFetchTree()
   {
-    $git_fs = new Filesystem(new Local(__DIR__.'/../Testrepo.git'));
-
-    $transport = new Transport\GaufretteTransport($git_fs);
+    $transport = new Transport\NativeTransport(__DIR__.'/../../../Testrepo.git');
 
     $repo = new Repository;
     $repo->setHydrator('commit', new Hydrator\CommitHydrator($repo));
@@ -30,15 +28,19 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     $repo->setIndexDesiccator(new Desiccator\IndexDesiccator());
     $repo->setTransport($transport);
 
-    $git_index_adapter = new GitternIndexAdapter($repo, false);
+//    var_dump($repo->getObject('2c1298dc7a92eb18a1e72658f61f181e1afdeb56'));
+
+/*    $adapter = new GitternTreeishReadOnlyAdapter($repo, 'loose-ref');
+    $git_fs = new Filesystem($adapter);
+
+    var_dump($git_fs->read('classic.txt'));*/
+    
+//    var_dump($git_fs->read('classic.txt'));
+
+/*    $git_index_adapter = new GitternIndexAdapter($repo, false);
     $git_index_fs = new Filesystem($git_index_adapter);
 
-    $test_data_fs = new Filesystem(new Local(__DIR__.'/../Unversioned test data/'));
-
-    foreach ($test_data_fs->keys() as $key) 
-    {
-      $git_index_fs->write($key, $test_data_fs->read($key));
-    }
+    $git_index_fs->write('newfile.txt', "New file, new exciting contents!", true);
 
     $tree = $repo->getIndex()->createTree();
 
@@ -48,11 +50,11 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     $commit->setAuthorTime(new \DateTime());
     $commit->setCommitter(new GitObject\User("Magnus Nordlander", "magnus@nordlander.se"));
     $commit->setCommitTime(new \DateTime());
-    $commit->setMessage("Initial commit");
+    $commit->setMessage("Added new and exciting file");
 
     $repo->desiccateGitObject($commit);
-    $repo->moveBranch('master', $commit);
+    $repo->setBranch('master', $commit);
 
-    $repo->flush();
+    $repo->flush();*/
   }
 }

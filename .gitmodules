@@ -7,3 +7,6 @@
 [submodule "vendor/php-reader"]
 	path = vendor/php-reader
 	url = git://github.com/e-butik/php-reader.git
+[submodule "vendor/vfsStream"]
+	path = vendor/vfsStream
+	url = git://github.com/mikey179/vfsStream.git

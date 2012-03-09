@@ -82,7 +82,7 @@ class GitternTreeishReadOnlyAdapter implements Adapter
    *
    * @throws RuntimeException on failure
    */
-  public function write($key, $content)
+  public function write($key, $content, array $metadata = null)
   {
     throw new \RuntimeException("This adapter is read-only.");
   }
@@ -160,5 +160,10 @@ class GitternTreeishReadOnlyAdapter implements Adapter
   public function rename($key, $new)
   {
     throw new \RuntimeException("This adapter is read-only.");
+  }
+
+  public function supportsMetadata()
+  {
+    return false;
   }
 }
