@@ -21,6 +21,11 @@ class GitternIndexAdapter extends BaseAdapter
     $this->autoflush = $autoflush;
   }
 
+  protected function getIndex()
+  {
+    return $this->repo->getIndex();
+  }
+
   /**
    * @author Magnus Nordlander
    **/
@@ -28,7 +33,7 @@ class GitternIndexAdapter extends BaseAdapter
   {
     if ($this->autoflush)
     {
-      $this->repo->flush();      
+      $this->repo->flush();
     }
   }
 
@@ -41,7 +46,7 @@ class GitternIndexAdapter extends BaseAdapter
    */
   public function read($key)
   {
-    $entry = $this->repo->getIndex()->getEntryNamed($key);
+    $entry = $this->getIndex()->getEntryNamed($key);
 
     if ($entry)
     {
@@ -85,7 +90,7 @@ class GitternIndexAdapter extends BaseAdapter
     $entry->setName($key);
     $entry->setStage(0);
 
-    $this->repo->getIndex()->addEntry($entry);
+    $this->getIndex()->addEntry($entry);
 
     $this->flushIfSupposedTo();
   }
@@ -110,7 +115,7 @@ class GitternIndexAdapter extends BaseAdapter
    */
   public function keys()
   {
-    return $this->repo->getIndex()->getEntryNames();
+    return $this->getIndex()->getEntryNames();
   }
 
   /**
@@ -122,7 +127,7 @@ class GitternIndexAdapter extends BaseAdapter
    */
   public function mtime($key)
   {
-    $entry = $this->repo->getIndex()->getEntryNamed($key);
+    $entry = $this->getIndex()->getEntryNamed($key);
 
     if ($entry)
     {
@@ -154,7 +159,7 @@ class GitternIndexAdapter extends BaseAdapter
    */
   public function delete($key)
   {
-    $this->repo->getIndex()->removeEntryNamed($key);
+    $this->getIndex()->removeEntryNamed($key);
     $this->flushIfSupposedTo();
   }
 
@@ -168,13 +173,13 @@ class GitternIndexAdapter extends BaseAdapter
    */
   public function rename($key, $new)
   {
-    $entry = $this->repo->getIndex()->getEntryNamed($key);
+    $entry = $this->getIndex()->getEntryNamed($key);
 
     if ($entry)
     {
       $entry->setName($new);
-      $this->repo->getIndex()->removeEntryNamed($key);
-      $this->repo->getIndex()->addEntry($entry);
+      $this->getIndex()->removeEntryNamed($key);
+      $this->getIndex()->addEntry($entry);
       $this->flushIfSupposedTo();
       return;
     }

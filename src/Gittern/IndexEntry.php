@@ -2,6 +2,8 @@
 
 namespace Gittern;
 
+use Gittern\GitObject\Node\BlobNode;
+
 /**
 * @author Magnus Nordlander
 **/
@@ -28,6 +30,22 @@ class IndexEntry
   protected $stage;
 
   protected $name;
+
+  public static function createFromBlobNode(BlobNode $node)
+  {
+    $entry = new IndexEntry();
+    $entry->setBlob($node->getBlob());
+    $entry->setMode($node->getIntegerMode());
+    return $entry;
+  }
+
+  public function createBlobNode()
+  {
+    $blob_node = new BlobNode;
+    $blob_node->setBlob($entry->getBlob());
+    $blob_node->setIntegerMode($entry->getMode());
+    return $blob_node;
+  }
 
   /**
    * @author Magnus Nordlander

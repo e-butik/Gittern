@@ -35,11 +35,20 @@ class Index
     return array_values($this->entries);
   }
 
+  public function countEntries()
+  {
+    return count($this->entries);
+  }
+
   /**
    * @author Magnus Nordlander
    **/
   public function getEntryNamed($name)
   {
+    if (!isset($this->entries[$name]))
+    {
+      throw new \OutOfBoundsException('No entry named '.$name);
+    }
     return $this->entries[$name];
   }
 
@@ -93,13 +102,28 @@ class Index
         $current_tree = $node->getTree();
       }
 
-      $blob_node = new BlobNode;
+      $blob_node = $entry->createBlobNode();
       $blob_node->setName($blob_name);
-      $blob_node->setBlob($entry->getBlob());
-      $blob_node->setIntegerMode($entry->getMode());
       $current_tree->addNode($blob_node);
     }
 
     return $tree;
+  }
+
+  public function populateFromTree(Tree $tree, $prefix = '')
+  {
+    foreach ($tree as $node)
+    {
+      if ($node instanceOf TreeNode)
+      {
+        $this->populateFromTree($node->getTree(), $prefix.$node->getName().'/');
+      }
+      elseif ($node instanceof BlobNode)
+      {
+        $entry = IndexEntry::createFromBlobNode($node);
+        $entry->setName($prefix.$node->getName());
+        $this->addEntry($entry);
+      }
+    }
   }
 }
