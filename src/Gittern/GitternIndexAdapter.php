@@ -2,12 +2,12 @@
 
 namespace Gittern;
 
-use Gaufrette\Adapter;
+use Gaufrette\Adapter\Base as BaseAdapter;
 
 /**
 * @author Magnus Nordlander
 **/
-class GitternIndexAdapter implements Adapter
+class GitternIndexAdapter extends BaseAdapter
 {
   protected $repo;
   protected $autoflush = true;

@@ -2,12 +2,12 @@
 
 namespace Gittern;
 
-use Gaufrette\Adapter;
+use Gaufrette\Adapter\Base as BaseAdapter;
 
 /**
 * @author Magnus Nordlander
 **/
-class GitternTreeishReadOnlyAdapter implements Adapter
+class GitternTreeishReadOnlyAdapter extends BaseAdapter
 {
   protected $repo;
   protected $tree;
