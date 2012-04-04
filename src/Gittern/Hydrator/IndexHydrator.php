@@ -7,8 +7,8 @@ use Gittern\Index;
 use Gittern\IndexEntry;
 use Gittern\Proxy\BlobProxy;
 
-use Zend_Io_Reader;
-use Zend_Io_StringReader;
+use Iodophor\Io\StringReader;
+use Iodophor\Io\Reader;
 
 /**
 * @author Magnus Nordlander
@@ -32,7 +32,7 @@ class IndexHydrator
   {
     $index = new Index;
 
-    $reader = new Zend_Io_StringReader($data);
+    $reader = new StringReader($data);
 
     $signature = $reader->readString8(4);
 
@@ -112,7 +112,7 @@ class IndexHydrator
   /**
    * @author Magnus Nordlander
    **/
-  public function readEntryTime(Zend_Io_Reader $reader)
+  public function readEntryTime(Reader $reader)
   {
     $time_lsb32 = $reader->readInt32BE();
     $time_nsec = $reader->readUInt32BE();

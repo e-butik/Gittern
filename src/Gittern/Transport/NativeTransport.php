@@ -2,7 +2,7 @@
 
 namespace Gittern\Transport;
 
-use Zend_Io_FileReader as FileReader;
+use Iodophor\Io\FileReader;
 
 /**
 * @author Magnus Nordlander

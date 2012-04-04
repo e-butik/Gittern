@@ -2,7 +2,7 @@
 
 namespace Gittern\Transport;
 
-use Zend_Io_Reader as Reader;
+use Iodophor\Io\Reader;
 
 /**
 * 

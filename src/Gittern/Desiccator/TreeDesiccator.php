@@ -4,7 +4,7 @@ namespace Gittern\Desiccator;
 
 use Gittern\GitObject\Tree;
 
-use Zend_Io_StringWriter as StringWriter;
+use Iodophor\Io\StringWriter;
 
 /**
 * @author Magnus Nordlander

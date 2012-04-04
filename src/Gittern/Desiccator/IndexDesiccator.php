@@ -7,8 +7,8 @@ use Gittern\Index;
 use Gittern\IndexEntry;
 use Gittern\Proxy\BlobProxy;
 
-use Zend_Io_Writer;
-use Zend_Io_StringWriter;
+use Iodophor\Io\StringWriter;
+use Iodophor\Io\Writer;
 
 /**
 * @author Magnus Nordlander
@@ -20,7 +20,7 @@ class IndexDesiccator
    **/
   public function desiccate(Index $index)
   {
-    $writer = new Zend_Io_StringWriter();
+    $writer = new StringWriter();
 
     $entries = $index->getEntries();
 
@@ -75,7 +75,7 @@ class IndexDesiccator
     /**
    * @author Magnus Nordlander
    **/
-  public function writeEntryTime(Zend_Io_Writer $writer, $time)
+  public function writeEntryTime(Writer $writer, $time)
   {
     $writer->writeInt32BE((int)$time);
     //FIXME

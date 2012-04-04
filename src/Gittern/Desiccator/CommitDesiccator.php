@@ -6,8 +6,8 @@ use Gittern\GitObject\Commit;
 use Gittern\GitObject\Tree;
 use Gittern\GitObject\User;
 
-use Zend_Io_StringWriter as StringWriter;
-use Zend_Io_Writer as Writer;
+use Iodophor\Io\StringWriter;
+use Iodophor\Io\Writer;
 
 /**
 * @author Magnus Nordlander

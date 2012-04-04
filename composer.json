@@ -1,0 +1,25 @@
+{
+    "name": "e-butik/gittern",
+    "description": "A Git library written in pure PHP. Making Git like music for PHP's ears.",
+    "homepage": "http://github.com/e-butik/Gittern",
+    "license": "MIT",
+
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/e-butik/Iodophor"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.3.0",
+        "knplabs/gaufrette": "dev-master",
+        "mikey179/vfsStream": "*",
+        "symfony/class-loader": "*",
+        "e-butik/iodophor": "dev-master"
+    },
+
+    "autoload": {
+        "psr-0": { "Gittern": "src" }
+    }
+}
