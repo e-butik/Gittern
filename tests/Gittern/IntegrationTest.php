@@ -15,7 +15,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
    **/
   public function testFetchTree()
   {
-    $transport = new Transport\NativeTransport(__DIR__.'/../../../Testrepo.git');
+/*    $transport = new Transport\NativeTransport(__DIR__.'/../../../Testrepo.git');
 
     $repo = new Repository;
     $repo->setHydrator('commit', new Hydrator\CommitHydrator($repo));

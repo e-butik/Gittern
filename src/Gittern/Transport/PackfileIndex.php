@@ -35,34 +35,29 @@ class PackfileIndex
     return $this->size;
   }
 
-  public function getShasStart()
+  protected function getShasStart()
   {
     return self::HEADER_SIZE + 0x100*4;
   }
 
-  public function getShasStop()
+  protected function getShasStop()
   {
     return $this->getShasStart() + $this->getSize()*20;
   }
 
-  public function getCrcsStart()
+  protected function getCrcsStart()
   {
     return $this->getShasStop();
   }
 
-  public function getCrcsStop()
+  protected function getCrcsStop()
   {
     return $this->getCrcsStart() + $this->getSize() * 4;
   }
 
-  public function getSmallPackfileOffsetsStart()
+  protected function getSmallPackfileOffsetsStart()
   {
     return $this->getCrcsStop();
-  }
-
-  public function getSmallPackfileOffsetsStop()
-  {
-    $this->getSmallPackfileOffsetsStart() + $this->getSize() * 4;
   }
 
   public function getShas()
@@ -124,10 +119,5 @@ class PackfileIndex
     $shas = $this->getShas();
 
     return in_array($sha, $shas);
-  }
-
-  public function getPackfileSha()
-  {
-    # code...
   }
 }

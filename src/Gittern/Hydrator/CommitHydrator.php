@@ -13,7 +13,7 @@ use Gittern\Proxy\CommitProxy;
 /**
 * @author Magnus Nordlander
 **/
-class CommitHydrator implements ObjectHydrating
+class CommitHydrator implements HydratorInterface
 {
   protected $repo;
 

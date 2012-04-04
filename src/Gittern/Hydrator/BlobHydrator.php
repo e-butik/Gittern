@@ -7,7 +7,7 @@ use Gittern\GitObject\Blob;
 /**
 * @author Magnus Nordlander
 **/
-class BlobHydrator implements ObjectHydrating
+class BlobHydrator implements HydratorInterface
 {
   /**
    * @author Magnus Nordlander

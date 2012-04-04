@@ -79,6 +79,15 @@ class TreeProxy extends Tree
   /**
    * @author Magnus Nordlander
    **/
+  public function hasNodeNamed($name)
+  {
+    $this->__load();
+    return $this->tree->hasNodeNamed($name);
+  }
+
+  /**
+   * @author Magnus Nordlander
+   **/
   public function getIterator()
   {
     $this->__load();

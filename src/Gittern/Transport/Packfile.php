@@ -25,7 +25,7 @@ class Packfile
     $this->reader = $reader;
   }
 
-  public function setIndex(PackfileIndex $index)
+  public function setIndex(PackfileIndex $index = null)
   {
     $this->index = $index;
   }
@@ -56,7 +56,7 @@ class Packfile
     }
     else
     {
-      throw new \LogicException("getData without index is not implemented yet.");
+      throw new \LogicException("getRawObjectForSha without index is not implemented yet.");
     }
   }
 

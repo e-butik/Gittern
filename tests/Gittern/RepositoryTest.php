@@ -2,6 +2,9 @@
 
 namespace Gittern;
 
+/**
+ * @covers Gittern\Repository
+ */
 class RepositoryTest extends \PHPUnit_Framework_TestCase
 {
   public function testSetHydrator()

@@ -1,7 +1,14 @@
 <?php
 
-namespace Gittern;
+namespace Gittern\Hydrator;
 
+use Gittern\GitObject;
+
+use Mockery as M;
+
+/**
+ * @covers Gittern\Hydrator\CommitHydrator
+ */
 class CommitHydratorTest extends \PHPUnit_Framework_TestCase
 {
   public function testCommitHydratorHappyPath()
@@ -18,7 +25,7 @@ committer Magnus Nordlander <magnus@nordlander.se> 1316430078 +0200
 Updated to version 2.1.2
 EOF;
     
-    $hydrator = new Hydrator\CommitHydrator($this->getMock('Gittern\Repository', array(), array(), '', false));
+    $hydrator = new CommitHydrator(M::mock('Gittern\Repository'));
 
     $commit = $hydrator->hydrate($sha, $data);
 

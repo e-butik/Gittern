@@ -27,6 +27,8 @@ class RawObject
       case self::NUMERIC_TYPE_TAG:
         return 'tag';
     }
+
+    throw new \RuntimeException(sprintf("Numeric type 0x%x unknown", $type));
   }
 
   public function __construct($type, $length, $data)

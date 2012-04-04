@@ -1,8 +1,10 @@
 <?php
 
+// @codeCoverageIgnoreStart
+
 namespace Gittern\Hydrator;
 
-interface ObjectHydrating
+interface HydratorInterface
 {
   public function hydrate($object_sha, $data);
 }

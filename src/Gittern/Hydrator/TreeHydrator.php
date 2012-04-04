@@ -13,7 +13,7 @@ use Gittern\Repository;
 /**
 * @author Magnus Nordlander
 **/
-class TreeHydrator implements ObjectHydrating
+class TreeHydrator implements HydratorInterface
 {
   protected $repo;
 

@@ -23,7 +23,7 @@ class Repository
   /**
    * @author Magnus Nordlander
    **/
-  public function setHydrator($type, Hydrator\ObjectHydrating $hydrator)
+  public function setHydrator($type, Hydrator\HydratorInterface $hydrator)
   {
     $this->hydrators[$type] = $hydrator;
   }

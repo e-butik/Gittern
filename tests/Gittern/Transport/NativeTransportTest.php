@@ -6,8 +6,8 @@ use org\bovigo\vfs\vfsStream as VfsStream;
 use org\bovigo\vfs\vfsStreamWrapper as VfsStreamWrapper;
 
 /**
-* 
-*/
+ * @covers Gittern\Transport\NativeTransport
+ */
 class NativeTransportTest extends \PHPUnit_Framework_TestCase
 {
   public function setUp()

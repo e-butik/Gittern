@@ -1,5 +1,7 @@
 <?php
 
+// @codeCoverageIgnoreStart
+
 namespace Gittern\Transport;
 
 interface TransportInterface

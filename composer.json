@@ -16,7 +16,8 @@
         "knplabs/gaufrette": "dev-master",
         "mikey179/vfsStream": "*",
         "symfony/class-loader": "*",
-        "e-butik/iodophor": "dev-master"
+        "e-butik/iodophor": "dev-master",
+        "mockery/mockery": "*"
     },
 
     "autoload": {
