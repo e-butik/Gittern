@@ -31,7 +31,7 @@ class GitternTreeishReadOnlyAdapter extends BaseAdapter
     }
     else
     {
-      // throw
+      throw new \RuntimeException("Could not resolve treeish to a tree.");
     }
   }
 

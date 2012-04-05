@@ -32,6 +32,12 @@ If you want to learn how git works, there's plenty of resources. I'd suggest the
 * [Think like (a) Git](http://think-like-a-git.net/)
 * The Internals and Plumbing chapters in the [Git Community Book](http://book.git-scm.com/index.html)
 
+## Kinda-sorta bugs
+* The index flags field (see http://opensource.apple.com/source/Git/Git-26/src/git-htmldocs/technical/index-format.txt) contains an assume-valid flag that's not represented
+* The file name length of the flags field should only be written in full if it's less than 0xFFF.
+* The stage flag isn't desiccated properly.
+* Indexes in conflict (i.e. with stage > 0, see http://opensource.apple.com/source/Git/Git-26/src/git-htmldocs/technical/index-format.txt) should be handled somehow, even if just by an exception.
+
 ## Planned features
 There are several planned features, which didn't make it in to version 0.8. 
 

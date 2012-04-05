@@ -20,14 +20,21 @@ abstract class DecoratorTest extends \PHPUnit_Framework_TestCase
     foreach ($base_methods as $base_method)
     {
       $decorator_method = $decorator_rc->getMethod($base_method->getName());
-      if ($decorator_method->getDeclaringClass() != $decorator_rc)
+      $declaring_rc = $decorator_method->getDeclaringClass();
+      $declaring_class_name = $declaring_rc->getName();
+
+      if (( !$decorator_rc->isSubclassOf($declaring_class_name) ||
+            $base_rc->isSubclassOf($declaring_class_name) ||
+            $base_rc == $declaring_rc)
+          &&
+          $declaring_rc != $decorator_rc)
       {
         $this->fail(sprintf("Method %s expected to be redeclared in decorator, but wasn't.", $base_method->getName()));
       }
     }
   }
 
-  public function setupExpectationsOnMockAndGetParams($mock, $method, $return_value = 0xDEADCAFEBABE)
+  public function setupExpectationsOnMockAndGetParams(M\MockInterface $mock, $method, $return_value = 0xDEADCAFEBABE)
   {
     $params = array();
 

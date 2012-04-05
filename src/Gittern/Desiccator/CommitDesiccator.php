@@ -14,7 +14,7 @@ use Iodophor\Io\Writer;
 **/
 class CommitDesiccator
 {
-  public function writeTree(Tree $tree, Writer $writer)
+  protected function writeTree(Tree $tree, Writer $writer)
   {
     $sha = $tree->getSha();
 
@@ -28,7 +28,7 @@ class CommitDesiccator
     $writer->writeString8("\n");
   }
 
-  public function writeParent(Commit $commit, Writer $writer)
+  protected function writeParent(Commit $commit, Writer $writer)
   {
     $sha = $commit->getSha();
 
@@ -42,21 +42,21 @@ class CommitDesiccator
     $writer->writeString8("\n");
   }
 
-  public function writeAuthor(User $author, \DateTime $authorTime, Writer $writer)
+  protected function writeAuthor(User $author, \DateTime $authorTime, Writer $writer)
   {
     $writer->writeString8("author ");
     $this->writeUser($author, $authorTime, $writer);
     $writer->writeString8("\n");
   }
 
-  public function writeCommitter(User $committer, \DateTime $committerTime, Writer $writer)
+  protected function writeCommitter(User $committer, \DateTime $committerTime, Writer $writer)
   {
     $writer->writeString8("committer ");
     $this->writeUser($committer, $committerTime, $writer);
     $writer->writeString8("\n");
   }
 
-  public function writeUser(User $author, \DateTime $datetime, Writer $writer)
+  protected function writeUser(User $author, \DateTime $datetime, Writer $writer)
   {
     $writer->writeString8($author->getName());
     $writer->writeString8(" <");
