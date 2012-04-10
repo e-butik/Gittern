@@ -20,7 +20,7 @@ class BlobProxyTest extends DecoratorTest
 
   public function testIsGaplessDecorator()
   {
-    $this->assertClassIsGaplessDecorator('Gittern\GitObject\Blob', 'Gittern\Proxy\BlobProxy');
+    $this->assertClassIsGaplessDecorator('Gittern\Entity\GitObject\Blob', 'Gittern\Proxy\BlobProxy');
   }
 
   public function testCanGetShaWithoutLoading()
@@ -42,7 +42,7 @@ class BlobProxyTest extends DecoratorTest
    */
   public function testMethodIsProperlyDecorated($method_name)
   {
-    $blob_mock = M::mock('Gittern\GitObject\Blob');
+    $blob_mock = M::mock('Gittern\Entity\GitObject\Blob');
     $this->repo_mock->shouldReceive('getObject')->with($this->sha)->andReturn($blob_mock);
 
     $return_value = uniqid();

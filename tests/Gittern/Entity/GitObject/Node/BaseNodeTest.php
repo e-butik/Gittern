@@ -1,17 +1,17 @@
 <?php
 
-namespace Gittern\GitObject\Node;
+namespace Gittern\Entity\GitObject\Node;
 
 use Mockery as M;
 
 /**
- * @covers Gittern\GitObject\Node\BaseNode
+ * @covers Gittern\Entity\GitObject\Node\BaseNode
  */
 class BaseNodeTest extends \PHPUnit_Framework_TestCase
 {
   public function setUp()
   {
-    $this->node_mock = M::mock('Gittern\GitObject\Node\BaseNode[getRelatedObject]');
+    $this->node_mock = M::mock('Gittern\Entity\GitObject\Node\BaseNode[getRelatedObject]');
   }
 
   public function testCanGetAndSetMode()

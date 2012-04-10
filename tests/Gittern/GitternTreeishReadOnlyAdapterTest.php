@@ -12,7 +12,7 @@ class GitternTreeishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
   public function setUp()
   {
     $this->repo_mock = M::mock('Gittern\Repository');
-    $this->tree_mock = M::mock('Gittern\GitObject\Tree');
+    $this->tree_mock = M::mock('Gittern\Entity\GitObject\Tree');
     $this->repo_mock->shouldReceive('getObject')->with('foo')->andReturn($this->tree_mock)->atLeast()->once();
 
     $this->adapter = new GitternTreeishReadOnlyAdapter($this->repo_mock, 'foo');
@@ -31,7 +31,7 @@ class GitternTreeishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
   public function testCanConstructWithCommitRef()
   {
     $repo_mock = M::mock('Gittern\Repository');
-    $commit_mock = M::mock('Gittern\GitObject\Commit', array('getTree' => $this->tree_mock));
+    $commit_mock = M::mock('Gittern\Entity\GitObject\Commit', array('getTree' => $this->tree_mock));
     $repo_mock->shouldReceive('getObject')->with('foo')->andReturn($commit_mock)->atLeast()->once();
 
     new GitternTreeishReadOnlyAdapter($repo_mock, 'foo');
@@ -76,11 +76,11 @@ class GitternTreeishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
 
   public function testCanReadFile()
   {
-    $foo_mock = M::mock('Gittern\GitObject\Tree');
+    $foo_mock = M::mock('Gittern\Entity\GitObject\Tree');
     $this->tree_mock->shouldReceive('getNodeNamed')->with('foo')->andReturn($this->tree_mock);
     $this->tree_mock->shouldReceive('getRelatedObject')->andReturn($foo_mock);
 
-    $blob_mock = M::mock('Gittern\GitObject\Blob');
+    $blob_mock = M::mock('Gittern\Entity\GitObject\Blob');
     $foo_mock->shouldReceive('getNodeNamed')->with('bar')->andReturn($foo_mock);
     $foo_mock->shouldReceive('getRelatedObject')->andReturn($blob_mock);
 
@@ -102,7 +102,7 @@ class GitternTreeishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
 
   public function testCanChecksumFile()
   {
-    $foo_mock = M::mock('Gittern\GitObject\Blob');
+    $foo_mock = M::mock('Gittern\Entity\GitObject\Blob');
     $this->tree_mock->shouldReceive('getNodeNamed')->with('foo')->andReturn($this->tree_mock);
     $this->tree_mock->shouldReceive('getRelatedObject')->andReturn($foo_mock);
 

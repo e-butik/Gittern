@@ -1,8 +1,8 @@
 <?php
 
-namespace Gittern\GitObject\Node;
+namespace Gittern\Entity\GitObject\Node;
 
-use Gittern\GitObject\Blob;
+use Gittern\Entity\GitObject\Blob;
 
 /**
 * @author Magnus Nordlander

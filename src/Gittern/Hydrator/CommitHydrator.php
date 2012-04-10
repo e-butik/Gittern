@@ -2,8 +2,8 @@
 
 namespace Gittern\Hydrator;
 
-use Gittern\GitObject\Commit;
-use Gittern\GitObject\User;
+use Gittern\Entity\GitObject\Commit;
+use Gittern\Entity\GitObject\User;
 
 use Gittern\Repository;
 

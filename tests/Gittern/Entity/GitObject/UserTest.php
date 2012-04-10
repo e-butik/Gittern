@@ -1,9 +1,9 @@
 <?php
 
-namespace Gittern\GitObject;
+namespace Gittern\Entity\GitObject;
 
 /**
-* @covers Gittern\GitObject\User
+* @covers Gittern\Entity\GitObject\User
 */
 class UserTest extends \PHPUnit_Framework_TestCase
 {

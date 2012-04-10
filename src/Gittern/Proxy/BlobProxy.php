@@ -2,7 +2,7 @@
 
 namespace Gittern\Proxy;
 
-use Gittern\GitObject\Blob;
+use Gittern\Entity\GitObject\Blob;
 use Gittern\Repository;
 
 /**

@@ -1,18 +1,18 @@
 <?php
 
-namespace Gittern\GitObject;
+namespace Gittern\Entity\GitObject;
 
 use Mockery as M;
 
 /**
-* @covers Gittern\GitObject\Tree
+* @covers Gittern\Entity\GitObject\Tree
 */
 class TreeTest extends \PHPUnit_Framework_TestCase
 {
   public function setUp()
   {
     $this->tree = new Tree();
-    $this->node_mock = M::mock('Gittern\GitObject\Node\BaseNode', array('getName' => 'foobar'));
+    $this->node_mock = M::mock('Gittern\Entity\GitObject\Node\BaseNode', array('getName' => 'foobar'));
     $this->tree->addNode($this->node_mock);
   }
 
@@ -54,5 +54,16 @@ class TreeTest extends \PHPUnit_Framework_TestCase
     $this->assertInstanceOf('RecursiveIterator', $iterator);
     $this->assertInstanceOf('ArrayIterator', $iterator);
     $this->assertEquals($this->node_mock, $iterator->current());
+  }
+
+  public function testSortsNodes()
+  {
+    $new_node = M::mock('Gittern\Entity\GitObject\Node\BaseNode', array('getName' => 'aardvark'));
+    $this->tree->addNode($new_node);
+    $this->assertEquals(array($new_node, $this->node_mock), $this->tree->getNodes());
+    $first_node = M::mock('Gittern\Entity\GitObject\Node\BaseNode', array('getName' => 'Zebra'));
+    $this->tree->addNode($first_node);
+    $this->assertEquals(array($first_node, $new_node, $this->node_mock), $this->tree->getNodes());
+
   }
 }

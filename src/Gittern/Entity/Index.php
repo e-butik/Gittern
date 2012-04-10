@@ -1,10 +1,10 @@
 <?php
 
-namespace Gittern;
+namespace Gittern\Entity;
 
-use Gittern\GitObject\Tree;
-use Gittern\GitObject\Node\TreeNode;
-use Gittern\GitObject\Node\BlobNode;
+use Gittern\Entity\GitObject\Tree;
+use Gittern\Entity\GitObject\Node\TreeNode;
+use Gittern\Entity\GitObject\Node\BlobNode;
 
 /**
 * @author Magnus Nordlander

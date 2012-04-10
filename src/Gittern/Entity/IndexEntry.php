@@ -1,8 +1,9 @@
 <?php
 
-namespace Gittern;
+namespace Gittern\Entity;
 
-use Gittern\GitObject\Node\BlobNode;
+use Gittern\Entity\GitObject\Node\BlobNode;
+use Gittern\Entity\GitObject\Blob;
 
 /**
 * @author Magnus Nordlander
@@ -42,8 +43,8 @@ class IndexEntry
   public function createBlobNode()
   {
     $blob_node = new BlobNode;
-    $blob_node->setBlob($entry->getBlob());
-    $blob_node->setIntegerMode($entry->getMode());
+    $blob_node->setBlob($this->getBlob());
+    $blob_node->setIntegerMode($this->getMode());
     return $blob_node;
   }
 
@@ -178,7 +179,7 @@ class IndexEntry
   /**
    * @author Magnus Nordlander
    **/
-  public function setBlob(GitObject\Blob $blob)
+  public function setBlob(Blob $blob)
   {
     $this->blob = $blob;
   }

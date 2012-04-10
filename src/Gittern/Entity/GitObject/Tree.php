@@ -1,6 +1,6 @@
 <?php
 
-namespace Gittern\GitObject;
+namespace Gittern\Entity\GitObject;
 
 use Gittern\Iterator\RecursiveTreeIterator;
 
@@ -38,6 +38,7 @@ class Tree implements \IteratorAggregate
   public function addNode(Node\BaseNode $node)
   {
     $this->nodes[$node->getName()] = $node;
+    ksort($this->nodes);
   }
 
   /**

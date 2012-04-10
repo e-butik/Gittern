@@ -2,59 +2,99 @@
 
 namespace Gittern;
 
-use Gaufrette\Filesystem;
-use Gaufrette\Adapter\Local;
+use org\bovigo\vfs\vfsStream as VfsStream;
+use org\bovigo\vfs\vfsStreamWrapper as VfsStreamWrapper;
+
+use Gittern\Transport\NativeTransport;
 
 /**
 * @author Magnus Nordlander
+* @group functional
 **/
 class IntegrationTest extends \PHPUnit_Framework_TestCase
 {
-  /**
-   * @author Magnus Nordlander
-   **/
-  public function testFetchTree()
+  public function setUp()
   {
-/*    $transport = new Transport\NativeTransport(__DIR__.'/../../../Testrepo.git');
+    VfsStream::setup('Testrepo');
 
-    $repo = new Repository;
-    $repo->setHydrator('commit', new Hydrator\CommitHydrator($repo));
-    $repo->setHydrator('tree', new Hydrator\TreeHydrator($repo));
-    $repo->setHydrator('blob', new Hydrator\BlobHydrator($repo));
-    $repo->setDesiccator('blob', new Desiccator\BlobDesiccator());
-    $repo->setDesiccator('tree', new Desiccator\TreeDesiccator());
-    $repo->setDesiccator('commit', new Desiccator\CommitDesiccator());
-    $repo->setIndexHydrator(new Hydrator\IndexHydrator($repo));
-    $repo->setIndexDesiccator(new Desiccator\IndexDesiccator());
-    $repo->setTransport($transport);
+    if (!class_exists('ZipArchive'))
+    {
+      $this->markTestSkipped('The ZipArchive class is not available.');
+    }
 
-//    var_dump($repo->getObject('2c1298dc7a92eb18a1e72658f61f181e1afdeb56'));
+    $zip = new \ZipArchive;
+    if ($zip->open(__DIR__.'/Fixtures/Testrepo.git.zip') === true) 
+    {
+      $zip->extractTo(VfsStream::url('Testrepo'));
+      $zip->close();
+    } else {
+      $this->markTestSkipped('Couldn\'t extract repo zip');
+    }
 
-/*    $adapter = new GitternTreeishReadOnlyAdapter($repo, 'loose-ref');
-    $git_fs = new Filesystem($adapter);
+    $repo_url = VfsStream::url('Testrepo').'/Testrepo.git';
 
-    var_dump($git_fs->read('classic.txt'));*/
-    
-//    var_dump($git_fs->read('classic.txt'));
+    $transport = new NativeTransport($repo_url);
 
-/*    $git_index_adapter = new GitternIndexAdapter($repo, false);
-    $git_index_fs = new Filesystem($git_index_adapter);
+    $this->repo = new Repository();
+    $this->repo->setTransport($transport);
 
-    $git_index_fs->write('newfile.txt', "New file, new exciting contents!", true);
+    $configurator = new Configurator;
+    $configurator->defaultConfigure($this->repo);
 
-    $tree = $repo->getIndex()->createTree();
+    $this->master_adapter = new GitternTreeishReadOnlyAdapter($this->repo, "master");
 
-    $commit = new GitObject\Commit();
+    $this->index_adapter = new GitternIndexAdapter($this->repo);
+  }
+
+  public function testCanGetKeysOfMaster()
+  {
+    $this->assertEquals(array('Tech specs.pdf', 'classic.txt', 'newfile.txt'), $this->master_adapter->keys());
+  }
+
+  public function testCanReadFileInMaster()
+  {
+    $this->assertEquals('New file, new exciting contents!', $this->master_adapter->read('newfile.txt'));
+  }
+
+  public function testCanGetKeysOfIndex()
+  {
+    $this->assertEquals(array('Tech specs.pdf', 'classic.txt', 'newfile.txt'), $this->index_adapter->keys());
+  }
+
+  public function testCanReadFileInIndex()
+  {
+    $this->assertEquals('New file, new exciting contents!', $this->index_adapter->read('newfile.txt'));
+  }
+
+  public function testCanWriteToIndex()
+  {
+    $this->index_adapter->write('anotherfile.txt', 'Another day, another file');
+    $this->assertEquals('Another day, another file', $this->index_adapter->read('anotherfile.txt'));
+  }
+
+  public function testCanCommitFromIndex()
+  {
+    $master = $this->repo->getObject('master');
+
+    $this->index_adapter->write('anotherfile.txt', 'Another day, another file');
+    $tree = $this->repo->getIndex()->createTree();
+    $commit = new Entity\GitObject\Commit();
     $commit->setTree($tree);
-    $commit->setAuthor(new GitObject\User("Magnus Nordlander", "magnus@nordlander.se"));
+    $commit->addParent($master);
+    $commit->setMessage("Added another file");
+    $commit->setAuthor(new Entity\GitObject\User("Tessie Testson", "tessie.testson@example.com"));
+    $commit->setCommitter(new Entity\GitObject\User("Tessie Testson", "tessie.testson@example.com"));
     $commit->setAuthorTime(new \DateTime());
-    $commit->setCommitter(new GitObject\User("Magnus Nordlander", "magnus@nordlander.se"));
     $commit->setCommitTime(new \DateTime());
-    $commit->setMessage("Added new and exciting file");
 
-    $repo->desiccateGitObject($commit);
-    $repo->setBranch('master', $commit);
+    $this->repo->desiccateGitObject($commit);
+    $this->repo->setBranch('master', $commit);
 
-    $repo->flush();*/
+    $this->repo->flush();
+
+    $new_master_adapter = new GitternTreeishReadOnlyAdapter($this->repo, "master");
+
+    $this->assertEquals(array('Tech specs.pdf', 'anotherfile.txt', 'classic.txt', 'newfile.txt'), $new_master_adapter->keys());
+    $this->assertEquals('Another day, another file', $new_master_adapter->read('anotherfile.txt'));
   }
 }

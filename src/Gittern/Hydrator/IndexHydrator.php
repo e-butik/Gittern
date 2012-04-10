@@ -3,8 +3,8 @@
 namespace Gittern\Hydrator;
 
 use Gittern\Repository;
-use Gittern\Index;
-use Gittern\IndexEntry;
+use Gittern\Entity\Index;
+use Gittern\Entity\IndexEntry;
 use Gittern\Proxy\BlobProxy;
 
 use Iodophor\Io\StringReader;

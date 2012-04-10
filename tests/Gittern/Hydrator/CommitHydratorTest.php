@@ -2,7 +2,7 @@
 
 namespace Gittern\Hydrator;
 
-use Gittern\GitObject;
+use Gittern\Entity\GitObject;
 
 use Mockery as M;
 

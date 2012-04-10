@@ -20,7 +20,7 @@ class TreeProxyTest extends DecoratorTest
 
   public function testIsGaplessDecorator()
   {
-    $this->assertClassIsGaplessDecorator('Gittern\GitObject\Tree', 'Gittern\Proxy\TreeProxy');
+    $this->assertClassIsGaplessDecorator('Gittern\Entity\GitObject\Tree', 'Gittern\Proxy\TreeProxy');
   }
 
   public function testCanGetShaWithoutLoading()
@@ -45,7 +45,7 @@ class TreeProxyTest extends DecoratorTest
    */
   public function testMethodIsProperlyDecorated($method_name)
   {
-    $tree_mock = M::mock('Gittern\GitObject\Tree');
+    $tree_mock = M::mock('Gittern\Entity\GitObject\Tree');
     $this->repo_mock->shouldReceive('getObject')->with($this->sha)->andReturn($tree_mock);
 
     $return_value = uniqid();

@@ -2,9 +2,9 @@
 
 namespace Gittern\Desiccator;
 
-use Gittern\GitObject\Commit;
-use Gittern\GitObject\Tree;
-use Gittern\GitObject\User;
+use Gittern\Entity\GitObject\Commit;
+use Gittern\Entity\GitObject\Tree;
+use Gittern\Entity\GitObject\User;
 
 use Iodophor\Io\StringWriter;
 use Iodophor\Io\Writer;

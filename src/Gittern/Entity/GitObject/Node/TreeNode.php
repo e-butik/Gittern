@@ -1,8 +1,8 @@
 <?php
 
-namespace Gittern\GitObject\Node;
+namespace Gittern\Entity\GitObject\Node;
 
-use Gittern\GitObject\Tree;
+use Gittern\Entity\GitObject\Tree;
 
 /**
 * @author Magnus Nordlander

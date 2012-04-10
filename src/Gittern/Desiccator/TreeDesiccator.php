@@ -2,7 +2,7 @@
 
 namespace Gittern\Desiccator;
 
-use Gittern\GitObject\Tree;
+use Gittern\Entity\GitObject\Tree;
 
 use Iodophor\Io\StringWriter;
 

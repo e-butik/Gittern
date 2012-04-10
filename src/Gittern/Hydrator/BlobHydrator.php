@@ -2,7 +2,7 @@
 
 namespace Gittern\Hydrator;
 
-use Gittern\GitObject\Blob;
+use Gittern\Entity\GitObject\Blob;
 
 /**
 * @author Magnus Nordlander

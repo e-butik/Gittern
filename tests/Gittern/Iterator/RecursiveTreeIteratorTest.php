@@ -31,7 +31,7 @@ class RecursiveTreeIteratorTest extends \PHPUnit_Framework_TestCase
 
   public function testCanDetermineIfCurrentHasChildren()
   {
-    $iterator = new RecursiveTreeIterator(array('foo' => M::mock('Gittern\GitObject\Node\TreeNode'), 'bar' => 'baz'));
+    $iterator = new RecursiveTreeIterator(array('foo' => M::mock('Gittern\Entity\GitObject\Node\TreeNode'), 'bar' => 'baz'));
     $this->assertTrue($iterator->hasChildren());
     $iterator->next();
     $this->assertFalse($iterator->hasChildren());
@@ -40,7 +40,7 @@ class RecursiveTreeIteratorTest extends \PHPUnit_Framework_TestCase
   public function testCanGetCurrentChildrenWhenTheyExist()
   {
     $iterator_mock = M::mock('Gittern\Iterator\RecursiveTreeIterator');
-    $treenode_mock = M::mock('Gittern\GitObject\Node\TreeNode');
+    $treenode_mock = M::mock('Gittern\Entity\GitObject\Node\TreeNode');
 
     $treenode_mock->shouldReceive('getTree')->andReturn($treenode_mock);
     $treenode_mock->shouldReceive('getIterator')->andReturn($iterator_mock);

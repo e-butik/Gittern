@@ -1,11 +1,11 @@
 <?php
 
-namespace Gittern\GitObject;
+namespace Gittern\Entity\GitObject;
 
 use Mockery as M;
 
 /**
-* @covers Gittern\GitObject\Commit
+* @covers Gittern\Entity\GitObject\Commit
 */
 class CommitTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,28 +32,28 @@ class CommitTest extends \PHPUnit_Framework_TestCase
 
   public function testCanSetAndGetTree()
   {
-    $tree_mock = M::mock('Gittern\GitObject\Tree');
+    $tree_mock = M::mock('Gittern\Entity\GitObject\Tree');
     $this->commit->setTree($tree_mock);
     $this->assertEquals($tree_mock, $this->commit->getTree());
   }
 
   public function testCanAddAndGetParents()
   {
-    $commit_mock = M::mock('Gittern\GitObject\Commit');
+    $commit_mock = M::mock('Gittern\Entity\GitObject\Commit');
     $this->commit->addParent($commit_mock);
     $this->assertEquals(array($commit_mock), $this->commit->getParents());
   }
 
   public function testCanGetAndSetAuthor()
   {
-    $user_mock = M::mock('Gittern\GitObject\User');
+    $user_mock = M::mock('Gittern\Entity\GitObject\User');
     $this->commit->setAuthor($user_mock);
     $this->assertEquals($user_mock, $this->commit->getAuthor());
   }
 
   public function testCanGetAndSetCommitter()
   {
-    $user_mock = M::mock('Gittern\GitObject\User');
+    $user_mock = M::mock('Gittern\Entity\GitObject\User');
     $this->commit->setCommitter($user_mock);
     $this->assertEquals($user_mock, $this->commit->getCommitter());
   }

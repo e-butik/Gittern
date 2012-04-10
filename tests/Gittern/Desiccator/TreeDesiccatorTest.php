@@ -13,9 +13,9 @@ class TreeDesiccatorTest extends \PHPUnit_Framework_TestCase
   {
     $desiccator = new TreeDesiccator();
 
-    $tree = M::mock('Gittern\GitObject\Tree');
-    $node1_mock = M::mock('Gittern\GitObject\Node\TreeNode', array('getOctalModeString' => '040000', 'getName' => 'abacus'));
-    $node2_mock = M::mock('Gittern\GitObject\Node\BlobNode', array('getOctalModeString' => '100644', 'getName' => 'babacus'));
+    $tree = M::mock('Gittern\Entity\GitObject\Tree');
+    $node1_mock = M::mock('Gittern\Entity\GitObject\Node\TreeNode', array('getOctalModeString' => '040000', 'getName' => 'abacus'));
+    $node2_mock = M::mock('Gittern\Entity\GitObject\Node\BlobNode', array('getOctalModeString' => '100644', 'getName' => 'babacus'));
 
     $node1_mock->shouldReceive('getRelatedObject')->andReturn($node1_mock);
     $node1_mock->shouldReceive('getSha')->andReturn('935122a4458399ef488c872b42c6e9985f1d1e3b');
@@ -38,8 +38,8 @@ class TreeDesiccatorTest extends \PHPUnit_Framework_TestCase
   {
     $desiccator = new TreeDesiccator();
 
-    $tree = M::mock('Gittern\GitObject\Tree');
-    $node_mock = M::mock('Gittern\GitObject\Node\TreeNode', array('getOctalModeString' => '040000', 'getName' => 'abacus'));
+    $tree = M::mock('Gittern\Entity\GitObject\Tree');
+    $node_mock = M::mock('Gittern\Entity\GitObject\Node\TreeNode', array('getOctalModeString' => '040000', 'getName' => 'abacus'));
 
     $node_mock->shouldReceive('getRelatedObject')->andReturn($node_mock);
     $node_mock->shouldReceive('getSha')->andReturn(null);

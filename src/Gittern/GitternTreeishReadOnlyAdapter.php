@@ -20,12 +20,12 @@ class GitternTreeishReadOnlyAdapter extends BaseAdapter
     $this->repo = $repo;
 
     $object = $repo->getObject($treeish);
-    if ($object instanceof GitObject\Commit)
+    if ($object instanceof Entity\GitObject\Commit)
     {
       $object = $object->getTree();
     }
 
-    if ($object instanceof GitObject\Tree)
+    if ($object instanceof Entity\GitObject\Tree)
     {
       $this->tree = $object;
     }
@@ -50,7 +50,7 @@ class GitternTreeishReadOnlyAdapter extends BaseAdapter
 
     foreach ($components as $component) 
     {
-      if ($object instanceof GitObject\Tree)
+      if ($object instanceof Entity\GitObject\Tree)
       {
         $node = $object->getNodeNamed($component);
         
@@ -64,7 +64,7 @@ class GitternTreeishReadOnlyAdapter extends BaseAdapter
       break;
     }
 
-    if ($object instanceof GitObject\Blob)
+    if ($object instanceof Entity\GitObject\Blob)
     {
       return $object->getContents();
     }

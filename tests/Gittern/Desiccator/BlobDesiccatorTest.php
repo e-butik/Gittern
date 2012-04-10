@@ -13,7 +13,7 @@ class BlobDesiccatorTest extends \PHPUnit_Framework_TestCase
   {
     $desiccator = new BlobDesiccator();
 
-    $blob = M::mock('Gittern\GitObject\Blob', array('getContents' => 'foobar'));
+    $blob = M::mock('Gittern\Entity\GitObject\Blob', array('getContents' => 'foobar'));
     $this->assertEquals('foobar', $desiccator->desiccate($blob));
   }
 }

@@ -2,8 +2,8 @@
 
 namespace Gittern\Proxy;
 
-use Gittern\GitObject\Tree;
-use Gittern\GitObject\Node\BaseNode;
+use Gittern\Entity\GitObject\Tree;
+use Gittern\Entity\GitObject\Node\BaseNode;
 use Gittern\Repository;
 
 /**

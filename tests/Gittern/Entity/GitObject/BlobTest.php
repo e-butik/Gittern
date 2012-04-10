@@ -1,9 +1,9 @@
 <?php
 
-namespace Gittern\GitObject;
+namespace Gittern\Entity\GitObject;
 
 /**
-* @covers Gittern\GitObject\Blob
+* @covers Gittern\Entity\GitObject\Blob
 */
 class BlobTest extends \PHPUnit_Framework_TestCase
 {

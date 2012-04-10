@@ -2,7 +2,7 @@
 
 namespace Gittern\Iterator;
 
-use Gittern\GitObject\Node\TreeNode;
+use Gittern\Entity\GitObject\Node\TreeNode;
 
 /**
 * @author Magnus Nordlander

@@ -2,15 +2,15 @@
 
 namespace Gittern\Proxy;
 
-use Gittern\GitObject\Commit;
-use Gittern\GitObject\Tree;
-use Gittern\GitObject\User;
+use Gittern\Entity\GitObject\Commit;
+use Gittern\Entity\GitObject\Tree;
+use Gittern\Entity\GitObject\User;
 use Gittern\Repository;
 
 /**
 * @author Magnus Nordlander
 **/
-class commitProxy extends Commit
+class CommitProxy extends Commit
 {
   protected $sha;
   protected $commit;

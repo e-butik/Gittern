@@ -16,7 +16,7 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
 
     if (!class_exists('ZipArchive'))
     {
-      $this->markTestSkipped('The ZipArchive is not available.');
+      $this->markTestSkipped('The ZipArchive class is not available.');
     }
 
     $zip = new \ZipArchive;

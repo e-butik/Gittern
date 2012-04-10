@@ -2,13 +2,15 @@
 
 namespace Gittern\Hydrator;
 
-use Gittern\GitObject\Tree;
-use Gittern\GitObject\Node;
+use Gittern\Entity\GitObject\Tree;
+use Gittern\Entity\GitObject\Node;
 
 use Gittern\Proxy\BlobProxy;
 use Gittern\Proxy\TreeProxy;
 
 use Gittern\Repository;
+
+use Iodophor\Io\StringReader;
 
 /**
 * @author Magnus Nordlander
@@ -33,12 +35,14 @@ class TreeHydrator implements HydratorInterface
     $tree = new Tree;
     $tree->setSha($sha);
 
-    while (strlen($data))
-    {
-      sscanf($data, "%s %s%n", $mode, $name, $pos);
-      $sha = bin2hex(substr($data, $pos+1, 20));
+    $reader = new StringReader($data);
 
-      $mode = intval($mode, 8);
+    while ($reader->available())
+    {
+      $mode = intval($reader->readString8(6), 8);
+      assert($reader->readString8(1) == ' ');
+      $name = $this->readName($reader);
+      $sha = $reader->readHHex(20);
       $is_tree = (bool)($mode & 040000);
 
       if ($is_tree)
@@ -56,10 +60,23 @@ class TreeHydrator implements HydratorInterface
       $node->setName($name);
 
       $tree->addNode($node);
-
-      $data = substr($data, $pos+21);
     }
 
     return $tree;
+  }
+
+  protected function readName(StringReader $reader)
+  {
+    $name = '';
+    do {
+      $char = $reader->read(1);
+      if ($char != "\0")
+      {
+        $name .= $char;
+      }
+
+    } while($char != "\0");
+
+    return $name;
   }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace Gittern\GitObject\Node;
+namespace Gittern\Entity\GitObject\Node;
 
 use Mockery as M;
 
 /**
- * @covers Gittern\GitObject\Node\TreeNode
+ * @covers Gittern\Entity\GitObject\Node\TreeNode
  */
 class TreeNodeTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,14 +16,14 @@ class TreeNodeTest extends \PHPUnit_Framework_TestCase
 
   public function testCanGetAndSetTree()
   {
-    $tree = M::mock('Gittern\GitObject\Tree');
+    $tree = M::mock('Gittern\Entity\GitObject\Tree');
     $this->node_mock->setTree($tree);
     $this->assertEquals($tree, $this->node_mock->getTree());
   }
 
   public function testGetRelatedObject()
   {
-    $tree = M::mock('Gittern\GitObject\Tree');
+    $tree = M::mock('Gittern\Entity\GitObject\Tree');
     $this->node_mock->setTree($tree);
     $this->assertEquals($tree, $this->node_mock->getRelatedObject());
   }

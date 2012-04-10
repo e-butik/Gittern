@@ -1,6 +1,6 @@
 <?php
 
-namespace Gittern\GitObject\Node;
+namespace Gittern\Entity\GitObject\Node;
 
 /**
 * @author Magnus Nordlander

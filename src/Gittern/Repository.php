@@ -2,6 +2,8 @@
 
 namespace Gittern;
 
+use Gittern\Entity\Index;
+
 /**
 * @author Magnus Nordlander
 **/
@@ -73,15 +75,15 @@ class Repository
    **/
   public function getTypeForObject($object)
   {
-    if ($object instanceof GitObject\Blob)
+    if ($object instanceof Entity\GitObject\Blob)
     {
       return "blob";
     }
-    if ($object instanceof GitObject\Tree)
+    if ($object instanceof Entity\GitObject\Tree)
     {
       return "tree";
     }
-    if ($object instanceof GitObject\Commit)
+    if ($object instanceof Entity\GitObject\Commit)
     {
       return "commit";
     }
@@ -142,7 +144,7 @@ class Repository
     }
   }
 
-  public function setBranch($branch, GitObject\Commit $commit)
+  public function setBranch($branch, Entity\GitObject\Commit $commit)
   {
     $this->branch_moves[$branch] = $commit;
   }
@@ -189,11 +191,11 @@ class Repository
   {
     if (!$object->getSha())
     {
-      if ($object instanceof GitObject\Blob)
+      if ($object instanceof Entity\GitObject\Blob)
       {
         $this->doDesiccation($object);
       }
-      else if ($object instanceof GitObject\Tree)
+      else if ($object instanceof Entity\GitObject\Tree)
       {
         foreach ($object->getNodes() as $node)
         {
@@ -201,7 +203,7 @@ class Repository
         }
         $this->doDesiccation($object);
       }
-      else if ($object instanceof GitObject\Commit)
+      else if ($object instanceof Entity\GitObject\Commit)
       {
         $this->desiccateGitObject($object->getTree());
         foreach ($object->getParents() as $parent)
