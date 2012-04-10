@@ -6,6 +6,8 @@ use org\bovigo\vfs\vfsStream as VfsStream;
 use org\bovigo\vfs\vfsStreamWrapper as VfsStreamWrapper;
 
 use Gittern\Transport\NativeTransport;
+use Gittern\Gaufrette\GitternTreeishReadOnlyAdapter;
+use Gittern\Gaufrette\GitternIndexAdapter;
 
 /**
 * @author Magnus Nordlander

@@ -1,8 +1,10 @@
 <?php
 
-namespace Gittern;
+namespace Gittern\Gaufrette;
 
 use Gittern\Entity\IndexEntry;
+use Gittern\Repository;
+use Gittern\Entity\GitObject\Blob;
 
 use Gaufrette\Adapter\Base as BaseAdapter;
 
@@ -70,7 +72,7 @@ class GitternIndexAdapter extends BaseAdapter
    */
   public function write($key, $content, array $metadata = null)
   {
-    $blob = new Entity\GitObject\Blob();
+    $blob = new Blob();
 
     $blob->setContents($content);
 

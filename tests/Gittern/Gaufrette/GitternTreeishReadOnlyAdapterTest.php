@@ -1,11 +1,11 @@
 <?php
 
-namespace Gittern;
+namespace Gittern\Gaufrette;
 
 use Mockery as M;
 
 /**
-* @covers Gittern\GitternTreeishReadOnlyAdapter
+* @covers Gittern\Gaufrette\GitternTreeishReadOnlyAdapter
 */
 class GitternTreeishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
 {
@@ -54,7 +54,7 @@ class GitternTreeishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
   {
     $iter = new \RecursiveArrayIterator(array('foo' => array('foo/bar' => 1, 'foo/baz' => 2), 'quux' => 3));
 
-    $rp = new \ReflectionProperty('Gittern\GitternTreeishReadOnlyAdapter', 'tree');
+    $rp = new \ReflectionProperty('Gittern\Gaufrette\GitternTreeishReadOnlyAdapter', 'tree');
     $rp->setAccessible(true);
     $rp->setValue($this->adapter, $iter);
 
@@ -65,7 +65,7 @@ class GitternTreeishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
   {
     $iter = new \RecursiveArrayIterator(array('foo' => array('foo/bar' => 1, 'foo/baz' => 2), 'quux' => 3));
 
-    $rp = new \ReflectionProperty('Gittern\GitternTreeishReadOnlyAdapter', 'tree');
+    $rp = new \ReflectionProperty('Gittern\Gaufrette\GitternTreeishReadOnlyAdapter', 'tree');
     $rp->setAccessible(true);
     $rp->setValue($this->adapter, $iter);
 

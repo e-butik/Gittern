@@ -27,7 +27,7 @@ Code speaks louder than words:
 use Gittern\Repository,
     Gittern\Transport\NativeTransport,
     Gittern\Configurator,
-    Gittern\GitternTreeishReadOnlyAdapter;
+    Gittern\Gaufrette\GitternTreeishReadOnlyAdapter;
 
 use Gaufrette\Filesystem;
 
@@ -50,7 +50,7 @@ Again, code speaks louder than words:
 use Gittern\Repository,
     Gittern\Transport\NativeTransport,
     Gittern\Configurator,
-    Gittern\GitternIndexAdapter;
+    Gittern\Gaufrette\GitternIndexAdapter;
 
 use Gaufrette\Filesystem;
 
@@ -146,5 +146,4 @@ For this reason there's the Transport. The Transport knows all about how to get 
 
 ### Adapters
 
-Due to it's fine representation of the Git object model, Gittern is a breeze to work with. However, sometimes you don't actually care about the Git object model. Sometimes you just want to treat it like a filesystem. Lucky for us the fine folks at KnpLabs have created [Gaufrette](https://github.com/KnpLabs/Gaufrette), a file system abstraction layer. 
-
+Due to it's fine representation of the Git object model, Gittern is a breeze to work with. However, sometimes you don't actually care about the Git object model. Sometimes you just want to treat it like a filesystem. Lucky for us the fine folks at KnpLabs have created [Gaufrette](https://github.com/KnpLabs/Gaufrette), a file system abstraction layer. Gittern has two Gaufrette adapters, allowing you to treat a git repository like any other file system.

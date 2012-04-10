@@ -1,6 +1,11 @@
 <?php
 
-namespace Gittern;
+namespace Gittern\Gaufrette;
+
+use Gittern\Repository;
+use Gittern\Entity\GitObject\Blob;
+use Gittern\Entity\GitObject\Commit;
+use Gittern\Entity\GitObject\Tree;
 
 use Gaufrette\Adapter\Base as BaseAdapter;
 
@@ -20,12 +25,12 @@ class GitternTreeishReadOnlyAdapter extends BaseAdapter
     $this->repo = $repo;
 
     $object = $repo->getObject($treeish);
-    if ($object instanceof Entity\GitObject\Commit)
+    if ($object instanceof Commit)
     {
       $object = $object->getTree();
     }
 
-    if ($object instanceof Entity\GitObject\Tree)
+    if ($object instanceof Tree)
     {
       $this->tree = $object;
     }
@@ -50,7 +55,7 @@ class GitternTreeishReadOnlyAdapter extends BaseAdapter
 
     foreach ($components as $component) 
     {
-      if ($object instanceof Entity\GitObject\Tree)
+      if ($object instanceof Tree)
       {
         $node = $object->getNodeNamed($component);
         
@@ -64,7 +69,7 @@ class GitternTreeishReadOnlyAdapter extends BaseAdapter
       break;
     }
 
-    if ($object instanceof Entity\GitObject\Blob)
+    if ($object instanceof Blob)
     {
       return $object->getContents();
     }
