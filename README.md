@@ -21,8 +21,74 @@ Use Composer.
 To be written.
 
 ### Part the first, the GitternTreeishReadOnlyAdapter
+Code speaks louder than words:
+
+```php
+use Gittern\Repository,
+    Gittern\Transport\NativeTransport,
+    Gittern\Configurator,
+    Gittern\GitternTreeishReadOnlyAdapter;
+
+use Gaufrette\Filesystem;
+
+$repo = new Repository();
+$repo->setTransport(new NativeTransport($repo_path));
+
+$configurator = new Configurator;
+$configurator->defaultConfigure($repo);
+
+$filesystem = new Filesystem(new GitternTreeishReadOnlyAdapter($repo, "master"));
+```
+
+After this, you can use the filesystem like any other Gaufrette Filesystem. Just bear in mind that it's read-only, and will throw exceptions if you try to modify it.
 
 ### Part the second, the GitternIndexAdapter
+
+Again, code speaks louder than words:
+
+```php
+use Gittern\Repository,
+    Gittern\Transport\NativeTransport,
+    Gittern\Configurator,
+    Gittern\GitternIndexAdapter;
+
+use Gaufrette\Filesystem;
+
+$repo = new Repository();
+$repo->setTransport(new NativeTransport($repo_path));
+
+$configurator = new Configurator;
+$configurator->defaultConfigure($repo);
+
+$filesystem = new Filesystem(new GitternIndexAdapter($repo));
+```
+
+After this, you can use the filesystem like any other Gaufrette Filesystem.
+
+#### Committing
+The Git Index contains everything necessary to create a tree. Once you have a tree, creating a commit is a fairly straight-forward deal, but additional convenience is under consideration.
+
+```php
+use Gittern\Entity\GitObject\Commit,
+    Gittern\Entity\GitObject\User;
+
+$parent = $repo->getObject('master');
+
+$tree = $repo->getIndex()->createTree();
+$commit = new Commit();
+$commit->setTree($tree);
+$commit->addParent($parent);
+$commit->setMessage("Added another file");
+$commit->setAuthor(new User("Tessie Testson", "tessie.testson@example.com"));
+$commit->setCommitter(new User("Tessie Testson", "tessie.testson@example.com"));
+$commit->setAuthorTime(new \DateTime());
+$commit->setCommitTime(new \DateTime());
+
+$repo->desiccateGitObject($commit);
+$repo->setBranch('master', $commit);
+
+$repo->flush();
+```
 
 ### Part the third, the low level interface
 The low level interface is where the magic happens. This is also where you'll absolutely need to be familiar with the git model of blobs, trees, commits, and how the fit together. Seriously. If you don't e.g. know what a tree is (in the context of git, of course), probably won't understand how to use this, and theoretically you might be able to break your repos when using the low level interface. Proceed with caution.
@@ -46,6 +112,7 @@ There are several planned features, which didn't make it in to version 0.8.
 * Support for resolving lightweight tags
 * Support for reading annotated tags
 * Support for trees containing commits (i.e. submodules)
+* Making the Gittern\Entity\GitObject\User class into an interface
 
 ## Technical docs - What does the different kind of classes do?
 
