@@ -1,7 +1,7 @@
 # Gittern
 Making Git like music for PHP's ears.
 
-Version 0.8-dev
+Version 0.8 (because starting out at 0.1 or 1.0 is for squares)
 
 ## What is Gittern?
 Gittern is a PHP library for reading from and writing to Git repositories. It doesn't depend on the ```git``` binary, it directly acccesses the repo files.
@@ -110,13 +110,14 @@ If you want to learn how git works, there's plenty of resources. I'd suggest the
 * Indexes in conflict (i.e. with stage > 0, see http://opensource.apple.com/source/Git/Git-26/src/git-htmldocs/technical/index-format.txt) should be handled somehow, even if just by an exception.
 
 ## Planned features
-There are several planned features, which didn't make it in to version 0.8. 
+There are several planned features, which didn't make it in to version 0.8.
 
 * Subclassing Repository with a git binary dependent subclass to allow some advanced commands,
 * Packfile creation (currently packfiles can only be read)
 * Support for resolving lightweight tags
 * Support for reading annotated tags
-* Support for trees containing commits (i.e. submodules)
+* Support for the link tree entry type
+* Support for the commit tree entry type (i.e. submodules)
 * Making the Gittern\Entity\GitObject\User class into an interface
 
 ## Technical docs - What does the different kind of classes do?
