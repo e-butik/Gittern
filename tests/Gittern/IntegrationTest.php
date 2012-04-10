@@ -97,4 +97,16 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals(array('Tech specs.pdf', 'anotherfile.txt', 'classic.txt', 'newfile.txt'), $new_master_adapter->keys());
     $this->assertEquals('Another day, another file', $new_master_adapter->read('anotherfile.txt'));
   }
+
+  public function testCanGetMtime()
+  {
+    $this->assertEquals(1331292613, $this->index_adapter->mtime('newfile.txt'));
+  }
+
+  public function testCanMoveFilesInIndex()
+  {
+    $this->index_adapter->rename('newfile.txt', 'oldfile.txt');
+    $this->assertEquals('New file, new exciting contents!', $this->index_adapter->read('oldfile.txt'));
+    $this->assertEquals(array('Tech specs.pdf', 'classic.txt', 'oldfile.txt'), $this->index_adapter->keys());
+  }
 }

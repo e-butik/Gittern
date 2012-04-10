@@ -5,6 +5,8 @@ namespace Gittern\Hydrator;
 use Gittern\Entity\GitObject\Commit;
 use Gittern\Entity\GitObject\User;
 
+use Gittern\Transport\RawObject;
+
 use Gittern\Repository;
 
 use Gittern\Proxy\TreeProxy;
@@ -28,12 +30,12 @@ class CommitHydrator implements HydratorInterface
   /**
    * @author Magnus Nordlander
    **/
-  public function hydrate($sha, $data)
+  public function hydrate(RawObject $raw_object)
   {
     $commit = new Commit();
-    $commit->setSha($sha);
+    $commit->setSha($raw_object->getSha());
 
-    list($meta, $message) = explode("\n\n", $data);
+    list($meta, $message) = explode("\n\n", $raw_object->getData());
 
     $commit->setMessage($message);
 

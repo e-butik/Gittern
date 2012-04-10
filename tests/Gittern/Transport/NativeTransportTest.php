@@ -5,6 +5,8 @@ namespace Gittern\Transport;
 use org\bovigo\vfs\vfsStream as VfsStream;
 use org\bovigo\vfs\vfsStreamWrapper as VfsStreamWrapper;
 
+use Mockery as M;
+
 /**
  * @covers Gittern\Transport\NativeTransport
  */
@@ -90,11 +92,12 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals('foo', file_get_contents($this->repo.'/index'));
   }
 
-  public function testCanPutObject()
+  public function testCanPutRawObject()
   {
-    $this->transport->putObject('deadbeefcafebabefacebadc0ffeebadf00dcafe', 'foobar');
+    $raw_object = M::mock('Gittern\Transport\RawObject', array('getSha' => 'deadbeefcafebabefacebadc0ffeebadf00dcafe', 'getData' => 'foobar', 'getType' => 'blob', 'getLength' => 6));
+    $this->transport->putRawObject($raw_object);
 
-    $this->assertEquals('foobar', file_get_contents($this->repo.'/objects/de/adbeefcafebabefacebadc0ffeebadf00dcafe'));
+    $this->assertEquals(gzcompress("blob 6\0foobar", 4), file_get_contents($this->repo.'/objects/de/adbeefcafebabefacebadc0ffeebadf00dcafe'));
   }
 
   public function testCanReadLooseObject()
@@ -117,7 +120,7 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
    */
   public function testCantReadEmptyLooseObject()
   {
-    $this->transport->putObject('deadbeefcafebabefacebadc0ffeebadf00dcafe', gzcompress(''));
+    $this->writeData('objects/de/adbeefcafebabefacebadc0ffeebadf00dcafe', gzcompress(''));
 
     $this->transport->resolveRawObject('deadbeefcafebabefacebadc0ffeebadf00dcafe');
   }
@@ -128,7 +131,7 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
    */
   public function testCantLooseObjectWithInvalidLength()
   {
-    $this->transport->putObject('deadbeefcafebabefacebadc0ffeebadf00dcafe', gzcompress("blob 100\0a"));
+    $this->writeData('objects/de/adbeefcafebabefacebadc0ffeebadf00dcafe', gzcompress("blob 100\0a"));
 
     $this->transport->resolveRawObject('deadbeefcafebabefacebadc0ffeebadf00dcafe');
   }
@@ -138,5 +141,19 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
     $raw_object = $this->transport->resolveRawObject('deadbeefcafebabefacebadc0ffeebadf00dcafe');
 
     $this->assertNull($raw_object);
+  }
+
+  protected function writeData($relative_path, $data)
+  {
+    $path = $this->repo.'/'.$relative_path;
+
+    $dir = pathinfo($path, PATHINFO_DIRNAME);
+
+    if (!is_dir($dir))
+    {
+      mkdir($dir, 0777, true);
+    }
+
+    file_put_contents($path, $data);
   }
 }

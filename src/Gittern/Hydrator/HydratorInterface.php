@@ -4,7 +4,9 @@
 
 namespace Gittern\Hydrator;
 
+use Gittern\Transport\RawObject;
+
 interface HydratorInterface
 {
-  public function hydrate($object_sha, $data);
+  public function hydrate(RawObject $raw_object);
 }

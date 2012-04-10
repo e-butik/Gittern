@@ -10,6 +10,8 @@ use Gittern\Proxy\TreeProxy;
 
 use Gittern\Repository;
 
+use Gittern\Transport\RawObject;
+
 use Iodophor\Io\StringReader;
 
 /**
@@ -30,12 +32,12 @@ class TreeHydrator implements HydratorInterface
   /**
    * @author Magnus Nordlander
    **/
-  public function hydrate($sha, $data)
+  public function hydrate(RawObject $raw_object)
   {
     $tree = new Tree;
-    $tree->setSha($sha);
+    $tree->setSha($raw_object->getSha());
 
-    $reader = new StringReader($data);
+    $reader = new StringReader($raw_object->getData());
 
     while ($reader->available())
     {

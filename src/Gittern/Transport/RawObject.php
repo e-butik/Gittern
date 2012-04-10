@@ -12,7 +12,7 @@ class RawObject
   const NUMERIC_TYPE_BLOB = 0x03;
   const NUMERIC_TYPE_TAG = 0x04;
 
-  protected $type, $data;
+  protected $type, $data, $sha;
 
   protected function convertNumericType($type)
   {
@@ -31,11 +31,11 @@ class RawObject
     throw new \RuntimeException(sprintf("Numeric type 0x%x unknown", $type));
   }
 
-  public function __construct($type, $length, $data)
+  public function __construct($type, $data)
   {
     if (is_numeric($type))
     {
-      $this->type = $this->convertNumericType($type);      
+      $this->type = $this->convertNumericType($type);
     }
     else
     {
@@ -52,5 +52,19 @@ class RawObject
   public function getData()
   {
     return $this->data;
+  }
+
+  public function getSha()
+  {
+    if (!$this->sha)
+    {
+      $this->sha = sha1($this->type.' '.$this->getLength()."\0".$this->data);
+    }
+    return $this->sha;
+  }
+
+  public function getLength()
+  {
+    return strlen($this->data);
   }
 }

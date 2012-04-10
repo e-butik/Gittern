@@ -3,6 +3,7 @@
 namespace Gittern\Desiccator;
 
 use Gittern\Entity\GitObject\Tree;
+use Gittern\Transport\RawObject;
 
 use Iodophor\Io\StringWriter;
 
@@ -32,6 +33,8 @@ class TreeDesiccator
       $writer->writeHHex($sha);
     }
 
-    return $writer->toString();
+    $data = $writer->toString();
+
+    return new RawObject('tree', $data);
   }
 }

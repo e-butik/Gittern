@@ -15,9 +15,11 @@ class TreeHydratorTest extends \PHPUnit_Framework_TestCase
     $blob_line = sprintf("%s %s\0%s", "100644", 'testblob.md', pack("H*", "deadbeefcafebabefacebadc0ffeebadf00dface"));
     $tree_line = sprintf("%s %s\0%s", "040000", 'testtree', pack("H*", "deadbeefcafebabefacebadc0ffeebadf00dbeef"));
 
+    $raw_object = M::mock('Gittern\Transport\RawObject', array('getSha' => $sha, 'getData' => $blob_line.$tree_line));
+
     $hydrator = new TreeHydrator(M::mock('Gittern\Repository'));
 
-    $tree = $hydrator->hydrate($sha, $blob_line.$tree_line);
+    $tree = $hydrator->hydrate($raw_object);
 
     $this->assertEquals($sha, $tree->getSha());
     $nodes = $tree->getNodes();
@@ -37,9 +39,11 @@ class TreeHydratorTest extends \PHPUnit_Framework_TestCase
     $sha = "deadbeefcafebabefacebadc0ffeebadf00dcafe";
     $blob_line = sprintf("%s %s\0%s", "100644", 'Test blob.md', pack("H*", "deadbeefcafebabefacebadc0ffeebadf00dface"));
 
+    $raw_object = M::mock('Gittern\Transport\RawObject', array('getSha' => $sha, 'getData' => $blob_line));
+
     $hydrator = new TreeHydrator(M::mock('Gittern\Repository'));
 
-    $tree = $hydrator->hydrate($sha, $blob_line);
+    $tree = $hydrator->hydrate($raw_object);
 
     $nodes = $tree->getNodes();
     $this->assertEquals('Test blob.md', $nodes[0]->getName());

@@ -87,10 +87,18 @@ class NativeTransport implements TransportInterface
     $first = substr($sha, 0, 2);
     $last = substr($sha, 2);
 
+    $loose_object_path = 'objects/'.$first.'/'.$last;
+
     // Unpacked case
-    if ($this->isFileRelative('objects/'.$first.'/'.$last))
+    if ($this->isFileRelative($loose_object_path))
     {
-      $uncompressed_data = gzuncompress($this->readFileRelative('objects/'.$first.'/'.$last));
+      $compressed_data = $this->readFileRelative($loose_object_path);
+      $uncompressed_data = @gzuncompress($compressed_data);
+
+      if ($uncompressed_data === false)
+      {
+        throw new \RuntimeException(sprintf('Couldn\'t decompress Git object in %s.', $this->resolveRelativePath($loose_object_path)));
+      }
 
       if (strlen($uncompressed_data) == 0)
       {
@@ -101,14 +109,19 @@ class NativeTransport implements TransportInterface
 
       $offset = strlen($type)+strlen($length)+2; //Space and NUL
 
-      if (strlen($uncompressed_data) !== $offset+$length)
+      $raw_object = new RawObject($type, substr($uncompressed_data, $offset));
+
+      if ($raw_object->getLength() !== $length)
       {
         throw new \RuntimeException(sprintf("Length derived from git object header (%d) does not match actual length (%d)", $offset+$length, strlen($uncompressed_data)));
       }
 
-      $data = substr($uncompressed_data, $offset, $length);
+      if ($raw_object->getSha() != $sha)
+      {
+        throw new \RuntimeException(sprintf("Unexpected RawObject sha, expected %s, was %s", $sha, $raw_object->getSha()));
+      }
 
-      return new RawObject($type, $length, $data);
+      return $raw_object;
     }
     else
     {
@@ -177,27 +190,30 @@ class NativeTransport implements TransportInterface
   /**
    * @author Magnus Nordlander
    **/
-  public function putObject($sha, $data)
+  public function putRawObject(RawObject $raw_object)
   {
+    $sha = $raw_object->getSha();
     $first = substr($sha, 0, 2);
     $last = substr($sha, 2);
+
+    $data = gzcompress($raw_object->getType().' '.$raw_object->getLength()."\0".$raw_object->getData(), 4);
 
     $this->writeFileRelative('objects/'.$first.'/'.$last, $data);
   }
 
   protected function isFileRelative($relative_path)
   {
-    return is_file($this->git_dir.'/'.$relative_path);
+    return is_file($this->resolveRelativePath($relative_path));
   }
 
   protected function readFileRelative($relative_path)
   {
-    return file_get_contents($this->git_dir.'/'.$relative_path);
+    return file_get_contents($this->resolveRelativePath($relative_path));
   }
 
   protected function writeFileRelative($relative_path, $data)
   {
-    $path = $this->git_dir.'/'.$relative_path;
+    $path = $this->resolveRelativePath($relative_path);
 
     $dir = pathinfo($path, PATHINFO_DIRNAME);
 
@@ -207,5 +223,10 @@ class NativeTransport implements TransportInterface
     }
 
     file_put_contents($path, $data);
+  }
+
+  protected function resolveRelativePath($relative_path)
+  {
+    return $this->git_dir.'/'.$relative_path;
   }
 }

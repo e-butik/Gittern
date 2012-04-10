@@ -4,6 +4,8 @@ namespace Gittern;
 
 use Gittern\Entity\Index;
 
+use Gittern\Transport\RawObject;
+
 /**
 * @author Magnus Nordlander
 **/
@@ -131,11 +133,11 @@ class Repository
    **/
   public function flush()
   {
-    foreach ($this->unflushed_objects as $sha => $data) 
+    foreach ($this->unflushed_objects as $sha => $raw_object) 
     {
-      $this->transport->putObject($sha, $data);
+      $this->transport->putRawObject($raw_object);
     }
-    
+
     $this->flushIndex();
 
     foreach ($this->branch_moves as $branch => $commit)
@@ -165,7 +167,7 @@ class Repository
       throw new \RuntimeException("No hydrator for type $type set");
     }
 
-    return $hydrator->hydrate($sha, $raw_object->getData());
+    return $hydrator->hydrate($raw_object);
   }
 
   protected function doDesiccation($object)
@@ -174,14 +176,11 @@ class Repository
 
     $desiccator = $this->getDesiccatorForType($type);
 
-    $desiccated_data = $desiccator->desiccate($object);
+    $raw_object = $desiccator->desiccate($object);
 
-    $data = $type.' '.strlen($desiccated_data)."\0".$desiccated_data;
+    $object->setSha($raw_object->getSha());
 
-    $sha = sha1($data);
-    $object->setSha($sha);
-
-    $this->unflushed_objects[$sha] = gzcompress($data, 4);
+    $this->unflushed_objects[$raw_object->getSha()] = $raw_object;
   }
 
   /**

@@ -52,7 +52,14 @@ class Packfile
     if ($this->index)
     {
       $offset = $this->index->getPackfileOffsetForSha($sha);
-      return $this->getRawObjectAtOffset($offset);
+      $raw_object = $this->getRawObjectAtOffset($offset);
+
+      if (!$raw_object->getSha() == $sha)
+      {
+        throw new \RuntimeException(sprintf("Unexpected RawObject sha, expected %s, was %s", $sha, $raw_object->getSha()));
+      }
+
+      return $raw_object;
     }
     else
     {
@@ -88,7 +95,14 @@ class Packfile
 
       $delta = gzuncompress($this->reader->read($size+512), $size);
 
+      if (strlen($delta) != $size)
+      {
+        throw new \RuntimeException(sprintf("Unexpected delta length, expected %d, was %d", $size, strlen($delta)));
+      }
+
       $data = $this->patchDelta($delta, $base_object);
+
+      $raw_object = new RawObject($type, $data);
     }
     else if ($type == self::OBJ_OFS_DELTA)
     {
@@ -107,17 +121,31 @@ class Packfile
 
       $delta = gzuncompress($this->reader->read($size+512), $size);
 
+      if (strlen($delta) != $size)
+      {
+        throw new \RuntimeException(sprintf("Unexpected delta length, expected %d, was %d", $size, strlen($delta)));
+      }
+
       $base_object = $this->getRawObjectAtOffset($base_offset);
       $type = $base_object->getType();
 
       $data = $this->patchDelta($delta, $base_object);
+
+      $raw_object = new RawObject($type, $data);
     }
     else
     {
       $data = gzuncompress($this->reader->read($size+512), $size);
+
+      $raw_object = new RawObject($type, $data);
+
+      if ($raw_object->getLength() != $size)
+      {
+        throw new \RuntimeException(sprintf("Unexpected RawObject length, expected %d, was %d", $size, $raw_object->getLength()));
+      }
     }
 
-    return new RawObject($type, $size, $data);
+    return $raw_object;
   }
 
   protected function patchDelta($delta, RawObject $base_object)

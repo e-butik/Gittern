@@ -27,7 +27,10 @@ class TreeDesiccatorTest extends \PHPUnit_Framework_TestCase
 
     $expected = sprintf("040000 abacus\0%s100644 babacus\0%s", pack("H*", "935122a4458399ef488c872b42c6e9985f1d1e3b"), pack("H*", "24fb5bad9c8f3b2694412ea309f207091f2309cf"));
 
-    $this->assertEquals($expected, $desiccator->desiccate($tree));
+    $raw_object = $desiccator->desiccate($tree);
+
+    $this->assertEquals($expected, $raw_object->getData());
+    $this->assertEquals('tree', $raw_object->getType());
   }
 
   /**

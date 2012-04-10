@@ -6,6 +6,8 @@ use Gittern\Entity\GitObject\Commit;
 use Gittern\Entity\GitObject\Tree;
 use Gittern\Entity\GitObject\User;
 
+use Gittern\Transport\RawObject;
+
 use Iodophor\Io\StringWriter;
 use Iodophor\Io\Writer;
 
@@ -83,6 +85,6 @@ class CommitDesiccator
     $writer->writeString8("\n");
     $writer->writeString8($commit->getMessage());
 
-    return $writer->toString();
+    return new RawObject('commit', $writer->toString());
   }
 }

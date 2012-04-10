@@ -24,10 +24,12 @@ committer Magnus Nordlander <magnus@nordlander.se> 1316430078 +0200
 
 Updated to version 2.1.2
 EOF;
-    
+
+    $raw_object = M::mock('Gittern\Transport\RawObject', array('getSha' => $sha, 'getData' => $data));
+
     $hydrator = new CommitHydrator(M::mock('Gittern\Repository'));
 
-    $commit = $hydrator->hydrate($sha, $data);
+    $commit = $hydrator->hydrate($raw_object);
 
     $this->assertEquals($sha, $commit->getSha());
     $this->assertEquals("b4ac469697c1e0f5fbb5702befc59fd7a90970a0", $commit->getTree()->getSha());
