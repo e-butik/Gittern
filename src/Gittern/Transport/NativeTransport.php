@@ -82,7 +82,7 @@ class NativeTransport implements TransportInterface
   /**
    * @author Magnus Nordlander
    **/
-  public function resolveRawObject($sha)
+  public function fetchRawObject($sha)
   {
     $first = substr($sha, 0, 2);
     $last = substr($sha, 2);

@@ -57,7 +57,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
 
   public function testCanSetTransport()
   {
-    $this->repo->setTransport(M::mock());
+    $this->repo->setTransport(M::mock('Gittern\Transport\TransportInterface'));
   }
 
   public function testCanSetIndexHydrator()
@@ -84,7 +84,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
   public function testWillGetIndexFromTransportIfDataExists()
   {
     $index = M::mock();
-    $transport = M::mock(array('hasIndexData' => true, 'getIndexData' => 'foo'));
+    $transport = M::mock('Gittern\Transport\TransportInterface', array('hasIndexData' => true, 'getIndexData' => 'foo'));
     $hydrator = M::mock();
     $hydrator->shouldReceive('hydrate')->with('foo')->andReturn($index);
 
@@ -96,7 +96,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
 
   public function testWillCreateNewIndexIfNoneExists()
   {
-    $transport = M::mock(array('hasIndexData' => false));
+    $transport = M::mock('Gittern\Transport\TransportInterface', array('hasIndexData' => false));
 
     $this->repo->setTransport($transport);
 
@@ -114,7 +114,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     $desiccator = M::mock();
     $desiccator->shouldReceive('desiccate')->with($index)->andReturn('foo');
 
-    $transport = M::mock();
+    $transport = M::mock('Gittern\Transport\TransportInterface');
     $transport->shouldReceive('putIndexData')->with('foo')->once();
 
     $this->repo->setIndexDesiccator($desiccator);

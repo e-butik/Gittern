@@ -6,7 +6,9 @@ namespace Gittern\Transport;
 
 interface TransportInterface
 {
-  public function resolveRawObject($sha);
+  public function fetchRawObject($sha);
+
+  public function putRawObject(RawObject $raw_object);
 
   public function resolveTreeish($treeish);
 

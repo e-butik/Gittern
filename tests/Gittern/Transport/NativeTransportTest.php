@@ -102,7 +102,7 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
 
   public function testCanReadLooseObject()
   {
-    $raw_object = $this->transport->resolveRawObject('a1a97f672a3421b53928cb9e6952e228eb8a4e04');
+    $raw_object = $this->transport->fetchRawObject('a1a97f672a3421b53928cb9e6952e228eb8a4e04');
 
     $this->assertEquals('blob', $raw_object->getType());
     $this->assertEquals("New file, new exciting contents!", $raw_object->getData());
@@ -110,7 +110,7 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
 
   public function testCanReadPackedObject()
   {
-    $raw_object = $this->transport->resolveRawObject('24fb5bad9c8f3b2694412ea309f207091f2309cf');
+    $raw_object = $this->transport->fetchRawObject('24fb5bad9c8f3b2694412ea309f207091f2309cf');
     $this->assertEquals('blob', $raw_object->getType());
   }
 
@@ -122,7 +122,7 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
   {
     $this->writeData('objects/de/adbeefcafebabefacebadc0ffeebadf00dcafe', gzcompress(''));
 
-    $this->transport->resolveRawObject('deadbeefcafebabefacebadc0ffeebadf00dcafe');
+    $this->transport->fetchRawObject('deadbeefcafebabefacebadc0ffeebadf00dcafe');
   }
 
   /**
@@ -133,12 +133,12 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
   {
     $this->writeData('objects/de/adbeefcafebabefacebadc0ffeebadf00dcafe', gzcompress("blob 100\0a"));
 
-    $this->transport->resolveRawObject('deadbeefcafebabefacebadc0ffeebadf00dcafe');
+    $this->transport->fetchRawObject('deadbeefcafebabefacebadc0ffeebadf00dcafe');
   }
 
   public function testCantResolveNonExistantObject()
   {
-    $raw_object = $this->transport->resolveRawObject('deadbeefcafebabefacebadc0ffeebadf00dcafe');
+    $raw_object = $this->transport->fetchRawObject('deadbeefcafebabefacebadc0ffeebadf00dcafe');
 
     $this->assertNull($raw_object);
   }

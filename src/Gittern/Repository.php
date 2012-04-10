@@ -3,8 +3,8 @@
 namespace Gittern;
 
 use Gittern\Entity\Index;
-
 use Gittern\Transport\RawObject;
+use Gittern\Transport\TransportInterface;
 
 /**
 * @author Magnus Nordlander
@@ -96,7 +96,7 @@ class Repository
   /**
    * @author Magnus Nordlander
    **/
-  public function setTransport($transport)
+  public function setTransport(TransportInterface $transport)
   {
     $this->transport = $transport;
   }
@@ -158,7 +158,7 @@ class Repository
   {
     $sha = $this->transport->resolveTreeish($treeish);
 
-    $raw_object = $this->transport->resolveRawObject($sha);
+    $raw_object = $this->transport->fetchRawObject($sha);
 
     $hydrator = $this->getHydratorForType($raw_object->getType());
 
