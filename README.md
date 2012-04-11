@@ -1,5 +1,5 @@
 # Gittern
-Making Git like music for PHP's ears.
+Making Git like music for PHP's ears. [![Build Status](https://secure.travis-ci.org/e-butik/Gittern.png)](http://travis-ci.org/e-butik/Gittern)
 
 Version 0.8 (because starting out at 0.1 or 1.0 is for squares)
 
