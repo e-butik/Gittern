@@ -4,6 +4,7 @@ namespace Gittern\Entity\GitObject;
 
 /**
 * @covers Gittern\Entity\GitObject\User
+* @author Magnus Nordlander
 */
 class UserTest extends \PHPUnit_Framework_TestCase
 {

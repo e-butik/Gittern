@@ -3,8 +3,8 @@
 namespace Gittern\Transport;
 
 /**
-* 
-*/
+* @author Magnus Nordlander
+**/
 class RawObject
 {
   const NUMERIC_TYPE_COMMIT = 0x01;

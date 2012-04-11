@@ -17,17 +17,11 @@ class IndexHydrator
 {
   protected $repo;
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function __construct(Repository $repo)
   {
     $this->repo = $repo;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function hydrate($data)
   {
     $index = new Index;
@@ -109,9 +103,6 @@ class IndexHydrator
     return $index;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function readEntryTime(Reader $reader)
   {
     $time_lsb32 = $reader->readInt32BE();

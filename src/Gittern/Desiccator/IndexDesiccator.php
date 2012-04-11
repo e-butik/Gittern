@@ -15,9 +15,6 @@ use Iodophor\Io\Writer;
 **/
 class IndexDesiccator
 {
-  /**
-   * @author Magnus Nordlander
-   **/
   public function desiccate(Index $index)
   {
     $writer = new StringWriter();

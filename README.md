@@ -34,7 +34,7 @@ use Gittern\Repository,
 
 use Gaufrette\Filesystem;
 
-$repo = new Repository();
+$repo = new Repository;
 $repo->setTransport(new NativeTransport($repo_path));
 
 $configurator = new Configurator;
@@ -57,7 +57,7 @@ use Gittern\Repository,
 
 use Gaufrette\Filesystem;
 
-$repo = new Repository();
+$repo = new Repository;
 $repo->setTransport(new NativeTransport($repo_path));
 
 $configurator = new Configurator;
@@ -75,17 +75,19 @@ The Git Index contains everything necessary to create a tree. Once you have a tr
 use Gittern\Entity\GitObject\Commit,
     Gittern\Entity\GitObject\User;
 
+use DateTime;
+
 $parent = $repo->getObject('master');
 
 $tree = $repo->getIndex()->createTree();
-$commit = new Commit();
+$commit = new Commit;
 $commit->setTree($tree);
 $commit->addParent($parent);
 $commit->setMessage("Added another file");
 $commit->setAuthor(new User("Tessie Testson", "tessie.testson@example.com"));
 $commit->setCommitter(new User("Tessie Testson", "tessie.testson@example.com"));
-$commit->setAuthorTime(new \DateTime());
-$commit->setCommitTime(new \DateTime());
+$commit->setAuthorTime(new DateTime);
+$commit->setCommitTime(new DateTime);
 
 $repo->desiccateGitObject($commit);
 $repo->setBranch('master', $commit);

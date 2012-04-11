@@ -8,6 +8,7 @@ require_once('DecoratorTest.php');
 
 /**
  * @covers Gittern\Proxy\BlobProxy
+ * @author Magnus Nordlander
  */
 class BlobProxyTest extends DecoratorTest
 {

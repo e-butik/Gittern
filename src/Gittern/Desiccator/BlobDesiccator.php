@@ -10,9 +10,6 @@ use Gittern\Transport\RawObject;
 **/
 class BlobDesiccator
 {
-  /**
-   * @author Magnus Nordlander
-   **/
   public function desiccate(Blob $blob)
   {
     $contents = $blob->getContents();

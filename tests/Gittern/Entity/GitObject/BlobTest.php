@@ -4,6 +4,7 @@ namespace Gittern\Entity\GitObject;
 
 /**
 * @covers Gittern\Entity\GitObject\Blob
+* @author Magnus Nordlander
 */
 class BlobTest extends \PHPUnit_Framework_TestCase
 {

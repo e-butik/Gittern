@@ -11,17 +11,11 @@ class BlobNode extends BaseNode
 {
   protected $blob;
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function setBlob(Blob $blob)
   {
     $this->blob = $blob;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getBlob()
   {
     return $this->blob;

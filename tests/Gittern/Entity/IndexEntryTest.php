@@ -6,6 +6,7 @@ use Mockery as M;
 
 /**
 * @covers Gittern\Entity\IndexEntry
+* @author Magnus Nordlander
 */
 class IndexEntryTest extends \PHPUnit_Framework_TestCase
 {

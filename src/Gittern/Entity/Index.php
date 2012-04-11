@@ -19,17 +19,11 @@ class Index
 
   protected $extensions = array();
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function addEntry(IndexEntry $entry)
   {
     $this->entries[$entry->getName()] = $entry;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getEntries()
   {
     return array_values($this->entries);
@@ -40,9 +34,6 @@ class Index
     return count($this->entries);
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getEntryNamed($name)
   {
     if (!isset($this->entries[$name]))
@@ -52,9 +43,6 @@ class Index
     return $this->entries[$name];
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function removeEntryNamed($name)
   {
     if (isset($this->entries[$name]))
@@ -65,9 +53,6 @@ class Index
     throw new \OutOfBoundsException('No entry named '.$name);
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getEntryNames()
   {
     return array_keys($this->entries);

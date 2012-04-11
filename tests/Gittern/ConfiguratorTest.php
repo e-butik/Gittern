@@ -6,6 +6,7 @@ use Mockery as M;
 
 /**
 * @covers Gittern\Configurator
+* @author Magnus Nordlander
 */
 class ConfiguratorTest extends \PHPUnit_Framework_TestCase
 {

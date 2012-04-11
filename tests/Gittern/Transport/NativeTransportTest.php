@@ -9,6 +9,7 @@ use Mockery as M;
 
 /**
  * @covers Gittern\Transport\NativeTransport
+ * @author Magnus Nordlander
  */
 class NativeTransportTest extends \PHPUnit_Framework_TestCase
 {

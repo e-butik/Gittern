@@ -7,6 +7,9 @@ use Mockery as M;
 use ReflectionClass;
 use ReflectionMethod;
 
+/**
+ * @author Magnus Nordlander
+ */
 abstract class DecoratorTest extends \PHPUnit_Framework_TestCase
 {
   public function assertClassIsGaplessDecorator($base_class, $decorator_class)

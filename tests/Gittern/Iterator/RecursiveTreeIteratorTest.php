@@ -6,6 +6,7 @@ use Mockery as M;
 
 /**
  * @covers Gittern\Iterator\RecursiveTreeIterator
+ * @author Magnus Nordlander
  */
 class RecursiveTreeIteratorTest extends \PHPUnit_Framework_TestCase
 {

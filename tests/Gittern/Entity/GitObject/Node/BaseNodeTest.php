@@ -6,6 +6,7 @@ use Mockery as M;
 
 /**
  * @covers Gittern\Entity\GitObject\Node\BaseNode
+ * @author Magnus Nordlander
  */
 class BaseNodeTest extends \PHPUnit_Framework_TestCase
 {

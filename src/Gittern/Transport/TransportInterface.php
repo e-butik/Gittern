@@ -4,6 +4,9 @@
 
 namespace Gittern\Transport;
 
+/**
+* @author Magnus Nordlander
+**/
 interface TransportInterface
 {
   public function fetchRawObject($sha);

@@ -4,6 +4,7 @@ namespace Gittern\Transport;
 
 /**
 * @covers Gittern\Transport\RawObject
+* @author Magnus Nordlander
 */
 class RawObjectTest extends \PHPUnit_Framework_TestCase
 {

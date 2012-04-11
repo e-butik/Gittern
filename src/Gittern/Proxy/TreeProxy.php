@@ -21,9 +21,6 @@ class TreeProxy extends Tree
     $this->repo = $repo;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function __load()
   {
     if (!$this->tree)
@@ -32,62 +29,41 @@ class TreeProxy extends Tree
     }
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getSha()
   {
     return $this->sha;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function setSha($sha)
   {
     $this->__load();
     return $this->tree->setSha($sha);
   }
 
-    /**
-   * @author Magnus Nordlander
-   **/
   public function addNode(BaseNode $node)
   {
     $this->__load();
     return $this->tree->addNode($node);
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getNodes()
   {
     $this->__load();
     return $this->tree->getNodes();
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getNodeNamed($name)
   {
     $this->__load();
     return $this->tree->getNodeNamed($name);
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function hasNodeNamed($name)
   {
     $this->__load();
     return $this->tree->hasNodeNamed($name);
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getIterator()
   {
     $this->__load();

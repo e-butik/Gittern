@@ -6,6 +6,7 @@ use Mockery as M;
 
 /**
  * @covers Gittern\Desiccator\BlobDesiccator
+ * @author Magnus Nordlander
  */
 class BlobDesiccatorTest extends \PHPUnit_Framework_TestCase
 {

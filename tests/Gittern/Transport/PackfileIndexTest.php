@@ -6,6 +6,7 @@ use Iodophor\Io\FileReader;
 
 /**
 * @covers Gittern\Transport\PackfileIndex
+* @author Magnus Nordlander
 */
 class PackfileIndexTest extends \PHPUnit_Framework_TestCase
 {

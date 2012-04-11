@@ -67,9 +67,6 @@ class CommitDesiccator
     $writer->writeString8($datetime->format('U O'));
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function desiccate(Commit $commit)
   {
     $writer = new StringWriter();

@@ -16,17 +16,11 @@ class TreeNode extends BaseNode
     $this->mode = 040000;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function setTree(Tree $tree)
   {
     $this->tree = $tree;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getTree()
   {
     return $this->tree;

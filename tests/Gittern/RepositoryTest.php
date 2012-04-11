@@ -6,6 +6,7 @@ use Mockery as M;
 
 /**
  * @covers Gittern\Repository
+ * @author Magnus Nordlander
  */
 class RepositoryTest extends \PHPUnit_Framework_TestCase
 {

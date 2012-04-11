@@ -6,6 +6,7 @@ use Mockery as M;
 
 /**
 * @covers Gittern\Gaufrette\GitternTreeishReadOnlyAdapter
+* @author Magnus Nordlander
 */
 class GitternTreeishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
 {

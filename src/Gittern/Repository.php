@@ -24,57 +24,36 @@ class Repository
 
   protected $transport;
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function setHydrator($type, Hydrator\HydratorInterface $hydrator)
   {
     $this->hydrators[$type] = $hydrator;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function setDesiccator($type, $desiccator)
   {
     $this->desiccators[$type] = $desiccator;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function setIndexHydrator($index_hydrator)
   {
     $this->index_hydrator = $index_hydrator;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function setIndexDesiccator($index_desiccator)
   {
     $this->index_desiccator = $index_desiccator;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getHydratorForType($type)
   {
     return $this->hydrators[$type];
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getDesiccatorForType($type)
   {
     return $this->desiccators[$type];
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getTypeForObject($object)
   {
     if ($object instanceof Entity\GitObject\Blob)
@@ -93,17 +72,11 @@ class Repository
     return null;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function setTransport(TransportInterface $transport)
   {
     $this->transport = $transport;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getIndex()
   {
     if (!$this->index)
@@ -120,17 +93,11 @@ class Repository
     return $this->index;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function flushIndex()
   {
     $this->transport->putIndexData($this->index_desiccator->desiccate($this->getIndex()));
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function flush()
   {
     foreach ($this->unflushed_objects as $sha => $raw_object) 
@@ -151,9 +118,6 @@ class Repository
     $this->branch_moves[$branch] = $commit;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getObject($treeish)
   {
     $sha = $this->transport->resolveTreeish($treeish);
@@ -183,9 +147,6 @@ class Repository
     $this->unflushed_objects[$raw_object->getSha()] = $raw_object;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function desiccateGitObject($object)
   {
     if (!$object->getSha())

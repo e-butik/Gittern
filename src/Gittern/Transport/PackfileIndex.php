@@ -5,8 +5,8 @@ namespace Gittern\Transport;
 use Iodophor\Io\Reader;
 
 /**
-* 
-*/
+* @author Magnus Nordlander
+**/
 class PackfileIndex
 {
   protected $reader;

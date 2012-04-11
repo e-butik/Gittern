@@ -3,8 +3,8 @@
 namespace Gittern;
 
 /**
-*
-*/
+* @author Magnus Nordlander
+**/
 class Configurator
 {
   public function defaultConfigure(Repository $repo)

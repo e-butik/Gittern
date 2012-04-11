@@ -16,9 +16,6 @@ class GitternIndexAdapter extends BaseAdapter
   protected $repo;
   protected $autoflush = true;
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function __construct(Repository $repo, $autoflush = true)
   {
     $this->repo = $repo;
@@ -30,9 +27,6 @@ class GitternIndexAdapter extends BaseAdapter
     return $this->repo->getIndex();
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function flushIfSupposedTo()
   {
     if ($this->autoflush)
@@ -41,13 +35,6 @@ class GitternIndexAdapter extends BaseAdapter
     }
   }
 
-  /**
-   * Reads the content of the file
-   *
-   * @param  string $key
-   *
-   * @return string
-   */
   public function read($key)
   {
     $entry = $this->getIndex()->getEntryNamed($key);
@@ -60,16 +47,6 @@ class GitternIndexAdapter extends BaseAdapter
     throw new \RuntimeException(sprintf('Could not read the \'%s\' file.', $key));
   }
 
-  /**
-   * Writes the given content into the file
-   *
-   * @param  string $key
-   * @param  string $content
-   *
-   * @return integer The number of bytes that were written into the file
-   *
-   * @throws RuntimeException on failure
-   */
   public function write($key, $content, array $metadata = null)
   {
     $blob = new Blob();
@@ -99,36 +76,16 @@ class GitternIndexAdapter extends BaseAdapter
     $this->flushIfSupposedTo();
   }
 
-
-  /**
-   * Indicates whether the file exists
-   *
-   * @param  string $key
-   *
-   * @return boolean
-   */
   public function exists($key)
   {
     return array_search($key, $this->keys()) !== false;
   }
 
-  /**
-   * Returns an array of all keys matching the specified pattern
-   *
-   * @return array
-   */
   public function keys()
   {
     return $this->getIndex()->getEntryNames();
   }
 
-  /**
-   * Returns the last modified time
-   *
-   * @param  string $key
-   *
-   * @return integer An UNIX like timestamp
-   */
   public function mtime($key)
   {
     $entry = $this->getIndex()->getEntryNamed($key);
@@ -141,40 +98,18 @@ class GitternIndexAdapter extends BaseAdapter
     throw new \RuntimeException(sprintf('Could not read the \'%s\' file.', $key));
   }
 
-  /**
-   * Returns the checksum of the file
-   *
-   * @param  string $key
-   *
-   * @return string
-   */
   public function checksum($key)
   {
     $file = $this->read($key);
     return md5($file);
   }
 
-  /**
-   * Deletes the file
-   *
-   * @param  string $key
-   *
-   * @throws RuntimeException on failure
-   */
   public function delete($key)
   {
     $this->getIndex()->removeEntryNamed($key);
     $this->flushIfSupposedTo();
   }
 
-  /**
-   * Renames a file
-   *
-   * @param string $key
-   * @param string $new
-   *
-   * @throws RuntimeException on failure
-   */
   public function rename($key, $new)
   {
     $entry = $this->getIndex()->getEntryNamed($key);

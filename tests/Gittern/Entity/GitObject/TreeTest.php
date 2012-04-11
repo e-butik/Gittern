@@ -6,6 +6,7 @@ use Mockery as M;
 
 /**
 * @covers Gittern\Entity\GitObject\Tree
+* @author Magnus Nordlander
 */
 class TreeTest extends \PHPUnit_Framework_TestCase
 {

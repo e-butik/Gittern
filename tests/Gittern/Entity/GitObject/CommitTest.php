@@ -6,6 +6,7 @@ use Mockery as M;
 
 /**
 * @covers Gittern\Entity\GitObject\Commit
+* @author Magnus Nordlander
 */
 class CommitTest extends \PHPUnit_Framework_TestCase
 {

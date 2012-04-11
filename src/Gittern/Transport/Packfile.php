@@ -5,8 +5,8 @@ namespace Gittern\Transport;
 use Iodophor\Io\Reader;
 
 /**
-* 
-*/
+* @author Magnus Nordlander
+**/
 class Packfile
 {
   protected $reader;
@@ -148,6 +148,9 @@ class Packfile
     return $raw_object;
   }
 
+  /**
+   * @see https://github.com/mojombo/grit/blob/master/lib/grit/git-ruby/internal/pack.rb
+   */
   protected function patchDelta($delta, RawObject $base_object)
   {
     $base = $base_object->getData();
@@ -161,7 +164,7 @@ class Packfile
 
     list($dest_size, $pos) = $this->patchDeltaHeaderSize($delta, $pos);
     $dest = "";
-    while ($pos < strlen($delta)) 
+    while ($pos < strlen($delta))
     {
       $c = ord($delta[$pos++]);
       if ($c & 0x80)
@@ -169,7 +172,7 @@ class Packfile
         $cp_off = $cp_size = 0;
         if ($c & 0x01)
         {
-          $cp_off = ord($delta[$pos++]);           
+          $cp_off = ord($delta[$pos++]);
         }
         if ($c & 0x02)
         {
@@ -184,22 +187,22 @@ class Packfile
           $cp_off |= ord($delta[$pos++]) << 24;
         }
 
-        if ($c & 0x10) 
+        if ($c & 0x10)
         {
           $cp_size = ord($delta[$pos++]);
         }
-        if ($c & 0x20) 
+        if ($c & 0x20)
         {
           $cp_size |= ord($delta[$pos++]) << 8;
         }
-        if ($c & 0x40) 
+        if ($c & 0x40)
         {
           $cp_size |= ord($delta[$pos++]) << 16;
         }
 
         if ($cp_size == 0)
         {
-          $cp_size = 0x10000;          
+          $cp_size = 0x10000;
         }
         $dest .= substr($base, $cp_off, $cp_size);
       }
@@ -217,7 +220,10 @@ class Packfile
     return $dest;
   }
 
-  public function patchDeltaHeaderSize($delta, $pos)
+  /**
+   * @see https://github.com/mojombo/grit/blob/master/lib/grit/git-ruby/internal/pack.rb
+   */
+  protected function patchDeltaHeaderSize($delta, $pos)
   {
     $size = 0;
     $shift = 0;

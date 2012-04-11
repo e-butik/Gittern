@@ -6,6 +6,7 @@ use Mockery as M;
 
 /**
  * @covers Gittern\Desiccator\TreeDesiccator
+ * @author Magnus Nordlander
  */
 class TreeDesiccatorTest extends \PHPUnit_Framework_TestCase
 {

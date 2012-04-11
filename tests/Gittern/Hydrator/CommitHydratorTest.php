@@ -8,6 +8,7 @@ use Mockery as M;
 
 /**
  * @covers Gittern\Hydrator\CommitHydrator
+ * @author Magnus Nordlander
  */
 class CommitHydratorTest extends \PHPUnit_Framework_TestCase
 {

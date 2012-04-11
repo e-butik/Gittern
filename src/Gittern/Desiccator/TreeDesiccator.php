@@ -12,9 +12,6 @@ use Iodophor\Io\StringWriter;
 **/
 class TreeDesiccator
 {
-  /**
-   * @author Magnus Nordlander
-   **/
   public function desiccate(Tree $tree)
   {
     $writer = new StringWriter();

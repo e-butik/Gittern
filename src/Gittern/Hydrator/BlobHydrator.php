@@ -10,9 +10,6 @@ use Gittern\Transport\RawObject;
 **/
 class BlobHydrator implements HydratorInterface
 {
-  /**
-   * @author Magnus Nordlander
-   **/
   public function hydrate(RawObject $raw_object)
   {
     $blob = new Blob;

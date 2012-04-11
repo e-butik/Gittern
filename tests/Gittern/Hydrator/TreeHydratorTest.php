@@ -6,6 +6,7 @@ use Mockery as M;
 
 /**
  * @covers Gittern\Hydrator\TreeHydrator
+ * @author Magnus Nordlander
  */
 class TreeHydratorTest extends \PHPUnit_Framework_TestCase
 {

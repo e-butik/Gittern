@@ -6,6 +6,7 @@ use Mockery as M;
 
 /**
  * @covers Gittern\Hydrator\BlobHydrator
+ * @author Magnus Nordlander
  */
 class BlobHydratorTest extends \PHPUnit_Framework_TestCase
 {

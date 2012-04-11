@@ -20,9 +20,6 @@ class BlobProxy extends Blob
     $this->repo = $repo;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function __load()
   {
     if (!$this->blob)
@@ -31,35 +28,23 @@ class BlobProxy extends Blob
     }
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getSha()
   {
     return $this->sha;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function setSha($sha)
   {
     $this->__load();
     return $this->blob->setSha($sha);
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function setContents($contents)
   {
     $this->__load();
     return $this->blob->setContents($contents);
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getContents()
   {
     $this->__load();

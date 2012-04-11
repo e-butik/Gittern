@@ -8,6 +8,7 @@ require_once('DecoratorTest.php');
 
 /**
  * @covers Gittern\Proxy\TreeProxy
+ * @author Magnus Nordlander
  */
 class TreeProxyTest extends DecoratorTest
 {

@@ -8,6 +8,7 @@ use Mockery as M;
 
 /**
  * @covers Gittern\Transport\Packfile
+ * @author Magnus Nordlander
  */
 class PackfileTest extends \PHPUnit_Framework_TestCase
 {

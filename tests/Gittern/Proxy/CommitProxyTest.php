@@ -8,6 +8,7 @@ require_once('DecoratorTest.php');
 
 /**
  * @covers Gittern\Proxy\CommitProxy
+ * @author Magnus Nordlander
  */
 class CommitProxyTest extends DecoratorTest
 {

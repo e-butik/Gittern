@@ -33,17 +33,11 @@ class NativeTransport implements TransportInterface
     return false;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function resolveHead($head_name)
   {
     return $this->resolveRef('heads/'.$head_name);
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   protected function resolveRef($ref)
   {
     if ($this->isFileRelative('refs/'.$ref))
@@ -56,9 +50,6 @@ class NativeTransport implements TransportInterface
     }
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   protected function resolvePackedRef($ref)
   {
     if ($this->isFileRelative('packed-refs'))
@@ -79,9 +70,6 @@ class NativeTransport implements TransportInterface
     $this->writeFileRelative('refs/heads/'.$branch, $sha);
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function fetchRawObject($sha)
   {
     $first = substr($sha, 0, 2);
@@ -171,25 +159,16 @@ class NativeTransport implements TransportInterface
     return $this->isFileRelative('index');
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getIndexData()
   {
     return $this->readFileRelative('index');
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function putIndexData($data)
   {
     $this->writeFileRelative('index', $data);
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function putRawObject(RawObject $raw_object)
   {
     $sha = $raw_object->getSha();

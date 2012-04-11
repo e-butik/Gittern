@@ -21,17 +21,11 @@ class TreeHydrator implements HydratorInterface
 {
   protected $repo;
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function __construct(Repository $repo)
   {
     $this->repo = $repo;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function hydrate(RawObject $raw_object)
   {
     $tree = new Tree;

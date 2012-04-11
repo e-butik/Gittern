@@ -11,17 +11,11 @@ class RecursiveTreeIterator extends \ArrayIterator implements \RecursiveIterator
 {
   protected $key_base = false;
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function setKeyBase($key_base)
   {
     $this->key_base = $key_base;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function hasChildren()
   {
     if ($this->current() instanceof TreeNode)
@@ -31,9 +25,6 @@ class RecursiveTreeIterator extends \ArrayIterator implements \RecursiveIterator
     return false;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/
   public function getChildren()
   {
     if ($this->hasChildren())
@@ -43,15 +34,12 @@ class RecursiveTreeIterator extends \ArrayIterator implements \RecursiveIterator
       {
         $iter->setKeyBase($this->key());
       }
-      
+
       return $iter;
     }
     return null;
   }
 
-  /**
-   * @author Magnus Nordlander
-   **/  
   public function key()
   {
     return ($this->key_base ? $this->key_base.'/'.parent::key() : parent::key());
