@@ -114,13 +114,14 @@ If you want to learn how git works, there's plenty of resources. I'd suggest the
 ## Planned features
 There are several planned features, which didn't make it in to version 0.8.
 
-* Subclassing Repository with a git binary dependent subclass to allow some advanced commands,
+* Subclassing Repository with a git binary dependent subclass to allow some advanced commands
 * Packfile creation (currently packfiles can only be read)
 * Support for resolving lightweight tags
 * Support for reading annotated tags
 * Support for the link tree entry type
 * Support for the commit tree entry type (i.e. submodules)
 * Making the Gittern\Entity\GitObject\User class into an interface
+* Support for all kinds of [Git Treeishes](http://book.git-scm.com/4_git_treeishes.html)
 
 ## Technical docs - What does the different kind of classes do?
 
