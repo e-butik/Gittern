@@ -5,18 +5,19 @@ namespace Gittern\Gaufrette;
 use Mockery as M;
 
 /**
-* @covers Gittern\Gaufrette\GitternTreeishReadOnlyAdapter
+* @covers Gittern\Gaufrette\GitternCommitishReadOnlyAdapter
 * @author Magnus Nordlander
 */
-class GitternTreeishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
+class GitternCommitishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
 {
   public function setUp()
   {
     $this->repo_mock = M::mock('Gittern\Repository');
     $this->tree_mock = M::mock('Gittern\Entity\GitObject\Tree');
-    $this->repo_mock->shouldReceive('getObject')->with('foo')->andReturn($this->tree_mock)->atLeast()->once();
+    $this->commit_mock = M::mock('Gittern\Entity\GitObject\Commit', array('getTree' => $this->tree_mock));
+    $this->repo_mock->shouldReceive('getObject')->with('foo')->andReturn($this->commit_mock)->atLeast()->once();
 
-    $this->adapter = new GitternTreeishReadOnlyAdapter($this->repo_mock, 'foo');
+    $this->adapter = new GitternCommitishReadOnlyAdapter($this->repo_mock, 'foo');
   }
 
   public function tearDown()
@@ -24,23 +25,14 @@ class GitternTreeishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
     M::close();
   }
 
-  public function testCanConstructWithTreeRef()
+  public function testCanConstructWithCommitRef()
   {
     // Tested in setUp
   }
 
-  public function testCanConstructWithCommitRef()
-  {
-    $repo_mock = M::mock('Gittern\Repository');
-    $commit_mock = M::mock('Gittern\Entity\GitObject\Commit', array('getTree' => $this->tree_mock));
-    $repo_mock->shouldReceive('getObject')->with('foo')->andReturn($commit_mock)->atLeast()->once();
-
-    new GitternTreeishReadOnlyAdapter($repo_mock, 'foo');
-  }
-
   /**
    * @expectedException RuntimeException
-   * @expectedExceptionMessage Could not resolve treeish to a tree.
+   * @expectedExceptionMessage Could not resolve commitish to a commit.
    */
   public function testCantConstructWithOtherRef()
   {
@@ -48,14 +40,14 @@ class GitternTreeishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
     $mock = M::mock();
     $repo_mock->shouldReceive('getObject')->with('foo')->andReturn($mock)->atLeast()->once();
 
-    new GitternTreeishReadOnlyAdapter($repo_mock, 'foo');
+    new GitternCommitishReadOnlyAdapter($repo_mock, 'foo');
   }
 
   public function testCanGetKeys()
   {
     $iter = new \RecursiveArrayIterator(array('foo' => array('foo/bar' => 1, 'foo/baz' => 2), 'quux' => 3));
 
-    $rp = new \ReflectionProperty('Gittern\Gaufrette\GitternTreeishReadOnlyAdapter', 'tree');
+    $rp = new \ReflectionProperty('Gittern\Gaufrette\GitternCommitishReadOnlyAdapter', 'tree');
     $rp->setAccessible(true);
     $rp->setValue($this->adapter, $iter);
 
@@ -66,7 +58,7 @@ class GitternTreeishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
   {
     $iter = new \RecursiveArrayIterator(array('foo' => array('foo/bar' => 1, 'foo/baz' => 2), 'quux' => 3));
 
-    $rp = new \ReflectionProperty('Gittern\Gaufrette\GitternTreeishReadOnlyAdapter', 'tree');
+    $rp = new \ReflectionProperty('Gittern\Gaufrette\GitternCommitishReadOnlyAdapter', 'tree');
     $rp->setAccessible(true);
     $rp->setValue($this->adapter, $iter);
 
@@ -112,12 +104,11 @@ class GitternTreeishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals(md5('Foobar'), $this->adapter->checksum('foo/bar'));
   }
 
-  public function testMtimeReturnsNow()
+  public function testMtimeReturnsCommitTime()
   {
-    $expected_time = time();
-    $actual_time = $this->adapter->mtime('foo');
-    $this->assertGreaterThanOrEqual($expected_time, $actual_time);
-    $this->assertLessThan($expected_time+5, $actual_time);
+    $expected_time = new \DateTime();
+    $this->commit_mock->shouldReceive('getCommitTime')->andReturn($expected_time);
+    $this->assertEquals($expected_time->format('U'), $this->adapter->mtime('foo'));
   }
 
   /**

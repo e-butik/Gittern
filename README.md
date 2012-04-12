@@ -8,7 +8,7 @@ Gittern is a PHP library for reading from and writing to Git repositories. It do
 
 Gittern provides several interfaces for interacting with your Git repos. Firstly, there's a low level interface, where you manually create blobs, trees and commits. This can however become cumbersome very quickly. As such, there's also two different Gaufrette adapters included.
 
-The first one, ```GitternTreeishReadOnlyAdapter``` is pretty much what it sounds like. It's an adapter to which you supply a treeish, and from which you may read the files associated with the treeish.
+The first one, ```GitternCommitishReadOnlyAdapter``` is pretty much what it sounds like. It's an adapter to which you supply a commitish, and from which you may read the files associated with that commit.
 
 The second one, ```GitternIndexAdapter``` allows you to read from and write to the Git index. The Git index is the staging area in which you stage new changes for a commit. Then, when you're ready, creating a commit from the index is quite simple. Just get the tree from the index, and use it to create your commit.
 
@@ -23,14 +23,14 @@ Use Composer.
 ## How do I use Gittern?
 There's basically three ways.
 
-### Part the first, the GitternTreeishReadOnlyAdapter
+### Part the first, the GitternCommitishReadOnlyAdapter
 Code speaks louder than words:
 
 ```php
 use Gittern\Repository,
     Gittern\Transport\NativeTransport,
     Gittern\Configurator,
-    Gittern\Gaufrette\GitternTreeishReadOnlyAdapter;
+    Gittern\Gaufrette\GitternCommitishReadOnlyAdapter;
 
 use Gaufrette\Filesystem;
 
@@ -40,7 +40,7 @@ $repo->setTransport(new NativeTransport($repo_path));
 $configurator = new Configurator;
 $configurator->defaultConfigure($repo);
 
-$filesystem = new Filesystem(new GitternTreeishReadOnlyAdapter($repo, "master"));
+$filesystem = new Filesystem(new GitternCommitishReadOnlyAdapter($repo, "master"));
 ```
 
 After this, you can use the filesystem like any other Gaufrette Filesystem. Just bear in mind that it's read-only, and will throw exceptions if you try to modify it.
@@ -110,6 +110,7 @@ If you want to learn how git works, there's plenty of resources. I'd suggest the
 * The file name length of the flags field should only be written in full if it's less than 0xFFF.
 * The stage flag isn't desiccated properly.
 * Indexes in conflict (i.e. with stage > 0, see http://opensource.apple.com/source/Git/Git-26/src/git-htmldocs/technical/index-format.txt) should be handled somehow, even if just by an exception.
+* The mtime of a file in GitternCommitishReadOnlyAdapter is always the same as for the commit, regardless of whether the file has been changed in the given commit or not.
 
 ## Planned features
 There are several planned features, which didn't make it in to version 0.8.

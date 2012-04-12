@@ -6,7 +6,7 @@ use org\bovigo\vfs\vfsStream as VfsStream;
 use org\bovigo\vfs\vfsStreamWrapper as VfsStreamWrapper;
 
 use Gittern\Transport\NativeTransport;
-use Gittern\Gaufrette\GitternTreeishReadOnlyAdapter;
+use Gittern\Gaufrette\GitternCommitishReadOnlyAdapter;
 use Gittern\Gaufrette\GitternIndexAdapter;
 
 /**
@@ -43,7 +43,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     $configurator = new Configurator;
     $configurator->defaultConfigure($this->repo);
 
-    $this->master_adapter = new GitternTreeishReadOnlyAdapter($this->repo, "master");
+    $this->master_adapter = new GitternCommitishReadOnlyAdapter($this->repo, "master");
 
     $this->index_adapter = new GitternIndexAdapter($this->repo);
   }
@@ -94,7 +94,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     $this->repo->flush();
 
-    $new_master_adapter = new GitternTreeishReadOnlyAdapter($this->repo, "master");
+    $new_master_adapter = new GitternCommitishReadOnlyAdapter($this->repo, "master");
 
     $this->assertEquals(array('Tech specs.pdf', 'anotherfile.txt', 'classic.txt', 'newfile.txt'), $new_master_adapter->keys());
     $this->assertEquals('Another day, another file', $new_master_adapter->read('anotherfile.txt'));

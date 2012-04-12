@@ -12,28 +12,25 @@ use Gaufrette\Adapter\Base as BaseAdapter;
 /**
 * @author Magnus Nordlander
 **/
-class GitternTreeishReadOnlyAdapter extends BaseAdapter
+class GitternCommitishReadOnlyAdapter extends BaseAdapter
 {
   protected $repo;
+  protected $commit;
   protected $tree;
 
-  public function __construct(Repository $repo, $treeish)
+  public function __construct(Repository $repo, $commitish)
   {
     $this->repo = $repo;
 
-    $object = $repo->getObject($treeish);
+    $object = $repo->getObject($commitish);
     if ($object instanceof Commit)
     {
-      $object = $object->getTree();
-    }
-
-    if ($object instanceof Tree)
-    {
-      $this->tree = $object;
+      $this->commit = $object;
+      $this->tree = $object->getTree();
     }
     else
     {
-      throw new \RuntimeException("Could not resolve treeish to a tree.");
+      throw new \RuntimeException("Could not resolve commitish to a commit.");
     }
   }
 
@@ -86,7 +83,7 @@ class GitternTreeishReadOnlyAdapter extends BaseAdapter
 
   public function mtime($key)
   {
-    return time();
+    return $this->commit->getCommitTime()->format('U');
   }
 
   public function checksum($key)
