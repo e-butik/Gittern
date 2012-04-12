@@ -18,7 +18,7 @@ In addition to all of this functionality, Gittern is created with extensibility 
 E-butik.se, one of Sweden's foremost e-commerce platform providers. Visit our [developer blog](http://developer.e-butik.se).
 
 ## How do I install Gittern?
-Use Composer.
+Use [Composer](http://getcomposer.org/).
 
 ## How do I use Gittern?
 There's basically three ways.
