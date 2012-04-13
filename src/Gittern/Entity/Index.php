@@ -53,6 +53,11 @@ class Index
     throw new \OutOfBoundsException('No entry named '.$name);
   }
 
+  public function clear()
+  {
+    $this->entries = array();
+  }
+
   public function getEntryNames()
   {
     return array_keys($this->entries);
