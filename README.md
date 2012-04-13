@@ -123,6 +123,7 @@ There are several planned features, which didn't make it in to version 0.8.
 * Support for the commit tree entry type (i.e. submodules)
 * Making the Gittern\Entity\GitObject\User class into an interface
 * Support for all kinds of [Git Treeishes](http://book.git-scm.com/4_git_treeishes.html)
+* Support for updating the reflog when moving a branch head
 
 ## Technical docs - What does the different kind of classes do?
 
