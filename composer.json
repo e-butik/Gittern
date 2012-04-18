@@ -9,7 +9,7 @@
         "e-butik/iodophor": "1.0"
     },
 
-    "suggest": {
+    "require-dev": {
         "knplabs/gaufrette": "*",
         "mikey179/vfsStream": "*",
         "mockery/mockery": "*"

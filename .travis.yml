@@ -4,8 +4,8 @@ php:
   - 5.3
   - 5.4
 
-script: phpunit -c phpunit.xml.dist 
+script: phpunit -c phpunit.xml.dist
 
 before_script: |
   wget http://getcomposer.org/composer.phar
-  php composer.phar install --install-suggests
+  php composer.phar install --dev
