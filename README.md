@@ -1,7 +1,9 @@
 # Gittern
 Making Git like music for PHP's ears. [![Build Status](https://secure.travis-ci.org/e-butik/Gittern.png)](http://travis-ci.org/e-butik/Gittern)
 
-Version 0.8 (because starting out at 0.1 or 1.0 is for squares)
+Version 0.8 under development (because starting out at 0.1 or 1.0 is for squares)
+
+Documentation is available at [Read the Docs](http://gittern.readthedocs.org/).
 
 ## What is Gittern?
 Gittern is a PHP library for reading from and writing to Git repositories. It doesn't depend on the ```git``` binary, it directly acccesses the repo files.
@@ -18,92 +20,10 @@ In addition to all of this functionality, Gittern is created with extensibility 
 E-butik.se, one of Sweden's foremost e-commerce platform providers. Visit our [developer blog](http://developer.e-butik.se).
 
 ## How do I install Gittern?
-Use [Composer](http://getcomposer.org/).
+Use [Composer](http://getcomposer.org/). More detailed instructions are available in the docs.
 
-## How do I use Gittern?
-There's basically three ways.
-
-### Part the first, the GitternCommitishReadOnlyAdapter
-Code speaks louder than words:
-
-```php
-use Gittern\Repository,
-    Gittern\Transport\NativeTransport,
-    Gittern\Configurator,
-    Gittern\Gaufrette\GitternCommitishReadOnlyAdapter;
-
-use Gaufrette\Filesystem;
-
-$repo = new Repository;
-$repo->setTransport(new NativeTransport($repo_path));
-
-$configurator = new Configurator;
-$configurator->defaultConfigure($repo);
-
-$filesystem = new Filesystem(new GitternCommitishReadOnlyAdapter($repo, "master"));
-```
-
-After this, you can use the filesystem like any other Gaufrette Filesystem. Just bear in mind that it's read-only, and will throw exceptions if you try to modify it.
-
-### Part the second, the GitternIndexAdapter
-
-Again, code speaks louder than words:
-
-```php
-use Gittern\Repository,
-    Gittern\Transport\NativeTransport,
-    Gittern\Configurator,
-    Gittern\Gaufrette\GitternIndexAdapter;
-
-use Gaufrette\Filesystem;
-
-$repo = new Repository;
-$repo->setTransport(new NativeTransport($repo_path));
-
-$configurator = new Configurator;
-$configurator->defaultConfigure($repo);
-
-$filesystem = new Filesystem(new GitternIndexAdapter($repo));
-```
-
-After this, you can use the filesystem like any other Gaufrette Filesystem.
-
-#### Committing
-The Git Index contains everything necessary to create a tree. Once you have a tree, creating a commit is a fairly straight-forward deal, but additional convenience is under consideration.
-
-```php
-use Gittern\Entity\GitObject\Commit,
-    Gittern\Entity\GitObject\User;
-
-use DateTime;
-
-$parent = $repo->getObject('master');
-
-$tree = $repo->getIndex()->createTree();
-$commit = new Commit;
-$commit->setTree($tree);
-$commit->addParent($parent);
-$commit->setMessage("Added another file");
-$commit->setAuthor(new User("Tessie Testson", "tessie.testson@example.com"));
-$commit->setCommitter(new User("Tessie Testson", "tessie.testson@example.com"));
-$commit->setAuthorTime(new DateTime);
-$commit->setCommitTime(new DateTime);
-
-$repo->desiccateGitObject($commit);
-$repo->setBranch('master', $commit);
-
-$repo->flush();
-```
-
-### Part the third, the low level interface
-**This section is very much incomplete. Currently, take a look at the test suite and the code to gain insight into how Gittern works.**
-
-The low level interface is where the magic happens. This is also where you'll absolutely need to be familiar with the git model of blobs, trees, commits, and how the fit together. Seriously. If you don't e.g. know what a tree is (in the context of git, of course), probably won't understand how to use this, and theoretically you might be able to break your repos when using the low level interface. Proceed with caution.
-
-If you want to learn how git works, there's plenty of resources. I'd suggest the following, in order:
-
-* [Think like (a) Git](http://think-like-a-git.net/)
-* The Internals and Plumbing chapters in the [Git Community Book](http://book.git-scm.com/index.html)
+## How stable is the API?
+Not very. We're still refactoring the API pretty much whenever we feel like it. What is semi-stable though is that the Gaufrette adapters will remain compatible with the Gaufrette master branch, so if you're mainly using the Gaufrette adapters, you'll not experience a lot of API breakage.
 
 ## Kinda-sorta bugs
 * The index flags field (see http://opensource.apple.com/source/Git/Git-26/src/git-htmldocs/technical/index-format.txt) contains an assume-valid flag that's not represented
@@ -124,35 +44,3 @@ There are several planned features, which didn't make it in to version 0.8.
 * Making the Gittern\Entity\GitObject\User class into an interface
 * Support for all kinds of [Git Treeishes](http://book.git-scm.com/4_git_treeishes.html)
 * Support for updating the reflog when moving a branch head
-
-## Technical docs - What does the different kind of classes do?
-
-### Entities
-
-The Git object model has quite a few entities, and Gittern divides them into two categories. GitObjects and "other". Any kind of entity which is persisted in the Git object store is a GitObject. That means Commits, trees (and their different node types), blobs and annotated tags (not yet supported). The index and it's entries are the current "other" entities.
-
-All of these objects represent a concept present in the Git object model.
-
-### Proxy
-
-When you fetch a Git entity (unless it's a blob), it's probably going to have relations to other entities. To make  it easier to work with the objects, Gittern creates proxy objects for these relations. When a method requires data that the proxy object doesn't already have (pretty much anything but the SHA), the proxy lazily loads the data from the repository.
-
-Proxies are decorators of the class they're proxying, and thus will pass a type check.
-
-### Hydrator
-
-In a normal git repository, the files are stored according to a certain file specification. The role of the hydrator is to a RawObject (which is basically just the file data and it's sha), and create an entity from it.
-
-### Desiccator
-
-A de-hydrator. Where a hydrator takes a RawObject and creates an entity from it, the desiccator takes and entity and creates a RawObject from it.
-
-### Transport
-
-In order for Gittern to be modular, the Repository class doesn't actually know how to read and write your RawObjects et c. from/to the disk. Maybe you don't even care that much about keeping compatibility with the git binary, and want to store your objects somewhere else. Maybe you want to cache them in e.g. Redis.
-
-For this reason there's the Transport. The Transport knows all about how to get your objects from the disk, how to resolve references, et c.
-
-### Adapters
-
-Due to it's fine representation of the Git object model, Gittern is a breeze to work with. However, sometimes you don't actually care about the Git object model. Sometimes you just want to treat it like a filesystem. Lucky for us the fine folks at KnpLabs have created [Gaufrette](https://github.com/KnpLabs/Gaufrette), a file system abstraction layer. Gittern has two Gaufrette adapters, allowing you to treat a git repository like any other file system.
