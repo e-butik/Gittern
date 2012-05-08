@@ -36,5 +36,31 @@ abstract class BaseNode
     return $this->name;
   }
 
+  public function equals(BaseNode $node)
+  {
+    if ($this->getIntegerMode() === $node->getIntegerMode() && $this->getName() === $node->getName())
+    {
+      $our_related = $this->getRelatedObject();
+      $theirs_related = $node->getRelatedObject();
+
+      // When the objects are new, or both proxies or non-proxies
+      if ($our_related == $theirs_related)
+      {
+        return true;
+      }
+      else
+      {
+        // When at least one of the objects are proxies
+        if ($our_related->getSha() != "" && $theirs_related->getSha() != "")
+        {
+          // SHA string comparison has to be with ===
+          return $our_related->getSha() === $theirs_related->getSha();
+        }
+      }
+    }
+
+    return false;
+  }
+
   abstract public function getRelatedObject();
 }
