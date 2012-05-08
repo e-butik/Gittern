@@ -54,7 +54,8 @@ class Packfile
       $offset = $this->index->getPackfileOffsetForSha($sha);
       $raw_object = $this->getRawObjectAtOffset($offset);
 
-      if (!$raw_object->getSha() == $sha)
+      // SHA string comparison has to be with ===
+      if (!$raw_object->getSha() === $sha)
       {
         throw new \RuntimeException(sprintf("Unexpected RawObject sha, expected %s, was %s", $sha, $raw_object->getSha()));
       }

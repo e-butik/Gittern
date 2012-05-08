@@ -143,12 +143,15 @@ class NativeTransport implements TransportInterface
   protected function getPackfileNames()
   {
     $return = array();
-    foreach (scandir($this->git_dir.'/objects/pack/') as $filename)
+    if (is_dir($this->git_dir.'/objects/pack/'))
     {
-      $matches = array();
-      if (preg_match('/^(pack-[0-9a-fA-F]+).pack$/', $filename, $matches) > 0)
+      foreach (scandir($this->git_dir.'/objects/pack/') as $filename)
       {
-        $return[] = $matches[1];
+        $matches = array();
+        if (preg_match('/^(pack-[0-9a-fA-F]+).pack$/', $filename, $matches) > 0)
+        {
+          $return[] = $matches[1];
+        }
       }
     }
     return $return;
