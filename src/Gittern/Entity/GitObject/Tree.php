@@ -38,7 +38,7 @@ class Tree implements \IteratorAggregate
   public function addNode(Node\BaseNode $node)
   {
     $this->nodes[$node->getName()] = $node;
-    ksort($this->nodes);
+    uksort($this->nodes, 'strcmp');
   }
 
   /**

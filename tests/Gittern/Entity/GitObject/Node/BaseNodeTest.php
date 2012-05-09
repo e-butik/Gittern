@@ -22,10 +22,10 @@ class BaseNodeTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals("100644", $this->node_mock->getOctalModeString());
   }
 
-  public function testCanPadModeToSixChars()
+  public function testWontPadMode()
   {
     $this->node_mock->setIntegerMode(040000);
-    $this->assertEquals("040000", $this->node_mock->getOctalModeString());
+    $this->assertSame("40000", $this->node_mock->getOctalModeString());
   }
 
   public function testCanGetAndSetName()

@@ -67,4 +67,11 @@ class TreeTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals(array($first_node, $new_node, $this->node_mock), $this->tree->getNodes());
 
   }
+
+  public function testSortsNodesWithStrcmp()
+  {
+    $new_node = M::mock('Gittern\Entity\GitObject\Node\BaseNode', array('getName' => '1337'));
+    $this->tree->addNode($new_node);
+    $this->assertEquals(array($new_node, $this->node_mock), $this->tree->getNodes());
+  }
 }

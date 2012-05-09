@@ -23,7 +23,7 @@ abstract class BaseNode
 
   public function getOctalModeString()
   {
-    return str_pad(decoct($this->mode), 6, "0", STR_PAD_LEFT);
+    return decoct($this->mode);
   }
 
   public function setName($name)

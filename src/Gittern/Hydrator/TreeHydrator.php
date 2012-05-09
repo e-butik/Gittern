@@ -35,8 +35,7 @@ class TreeHydrator implements HydratorInterface
 
     while ($reader->available())
     {
-      $mode = intval($reader->readString8(6), 8);
-      assert($reader->readString8(1) == ' ');
+      $mode = intval($this->readModeString($reader), 8);
       $name = $this->readName($reader);
       $sha = $reader->readHHex(20);
       $is_tree = (bool)($mode & 040000);
@@ -59,6 +58,22 @@ class TreeHydrator implements HydratorInterface
     }
 
     return $tree;
+  }
+
+  protected function readModeString(StringReader $reader)
+  {
+    $mode_string = '';
+    do {
+      $char = $reader->read(1);
+      if ($char != " ")
+      {
+        assert(is_numeric($char));
+        $mode_string .= $char;
+      }
+
+    } while($char != " ");
+
+    return $mode_string;
   }
 
   protected function readName(StringReader $reader)

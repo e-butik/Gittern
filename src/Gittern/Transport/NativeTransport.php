@@ -180,7 +180,10 @@ class NativeTransport implements TransportInterface
 
     $data = gzcompress($raw_object->getType().' '.$raw_object->getLength()."\0".$raw_object->getData(), 4);
 
-    $this->writeFileRelative('objects/'.$first.'/'.$last, $data);
+    if (!$this->isFileRelative('objects/'.$first.'/'.$last))
+    {
+      $this->writeFileRelative('objects/'.$first.'/'.$last, $data);
+    }
   }
 
   protected function isFileRelative($relative_path)
