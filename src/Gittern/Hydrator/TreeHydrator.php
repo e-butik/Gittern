@@ -12,6 +12,8 @@ use Gittern\Repository;
 
 use Gittern\Transport\RawObject;
 
+use Gittern\Exception\TreeParseException;
+
 use Iodophor\Io\StringReader;
 
 /**
@@ -65,12 +67,15 @@ class TreeHydrator implements HydratorInterface
     $mode_string = '';
     do {
       $char = $reader->read(1);
-      if ($char != " ")
+
+      if (is_numeric($char))
       {
-        assert(is_numeric($char));
         $mode_string .= $char;
       }
-
+      else if ($char != " ")
+      {
+        throw new TreeParseException(sprintf("Expected either 0-9 or space character at position %d, 0x%x found", $reader->getOffset()-1, ord($char)));
+      }
     } while($char != " ");
 
     return $mode_string;
