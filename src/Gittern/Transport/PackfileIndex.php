@@ -75,16 +75,44 @@ class PackfileIndex
     return $shas;
   }
 
+  protected function getStartOffsetForPrefix($prefix)
+  {
+    if ($prefix == 0)
+    {
+      return 0;
+    }
+    else
+    {
+      return $this->getStopOffsetForPrefix($prefix - 1);
+    }
+  }
+
+  protected function getStopOffsetForPrefix($prefix)
+  {
+    $fanout = $this->readFanoutForPrefix($prefix);
+    return $this->getShasStart() + ($fanout * 20);
+  }
+
+  protected function getStartCounterForPrefix($prefix)
+  {
+    if ($prefix == 0)
+    {
+      return 0;
+    }
+    else
+    {
+      return $this->readFanoutForPrefix($prefix-1);
+    }
+  }
+
   protected function getOffsetForSha($sha)
   {
     $prefix = hexdec(substr($sha, 0, 2));
-    $index = $this->readFanoutForPrefix($prefix)-1;
 
-    $shas_start = $this->getShasStart();
-    $start = $shas_start + $index*20;
-    $shas_stop = $this->getShasStop();
+    $start = $this->getStartOffsetForPrefix($prefix);
+    $stop = $this->getStopOffsetForPrefix($prefix);
 
-    $counter = $index;
+    $counter = $this->getStartCounterForPrefix($prefix);
     $this->reader->setOffset($start);
     do {
       $read_sha = $this->reader->readHHex(20);
@@ -95,7 +123,7 @@ class PackfileIndex
 
       $read_prefix = hexdec(substr($read_sha, 0, 2));
       $counter++;
-    } while ($read_prefix <= $prefix && $this->reader->getOffset() < $shas_stop);
+    } while ($read_prefix <= $prefix && $this->reader->getOffset() < $stop);
 
     throw new \RuntimeException("SHA $sha is not in packfile index");
   }
