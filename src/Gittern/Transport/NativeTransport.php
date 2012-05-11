@@ -30,12 +30,23 @@ class NativeTransport implements TransportInterface
       return $branch_sha;
     }
 
+    // Maybe it's a remote branch?
+    if ($branch_sha = $this->resolveRemote($treeish))
+    {
+      return $branch_sha;
+    }
+
     return false;
   }
 
   public function resolveHead($head_name)
   {
     return $this->resolveRef('heads/'.$head_name);
+  }
+
+  public function resolveRemote($remote_name)
+  {
+    return $this->resolveRef('remotes/'.$remote_name);
   }
 
   protected function resolveRef($ref)
