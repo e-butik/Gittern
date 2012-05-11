@@ -91,10 +91,10 @@ class Packfile
     {
       $sha = $this->reader->readHHex(20);
 
+      $delta = gzuncompress($this->reader->read($size+512), $size);
+
       $base_object = $this->getRawObjectForSha($sha);
       $type = $base_object->getType();
-
-      $delta = gzuncompress($this->reader->read($size+512), $size);
 
       if (strlen($delta) != $size)
       {
