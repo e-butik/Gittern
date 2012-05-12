@@ -21,6 +21,7 @@ class Repository
 
   protected $unflushed_objects = array();
   protected $branch_moves = array();
+  protected $branch_removes = array();
 
   protected $transport;
 
@@ -95,7 +96,10 @@ class Repository
 
   public function flushIndex()
   {
-    $this->transport->putIndexData($this->index_desiccator->desiccate($this->getIndex()));
+    if ($this->index)
+    {
+      $this->transport->putIndexData($this->index_desiccator->desiccate($this->getIndex()));
+    }
   }
 
   public function flush()
@@ -111,11 +115,36 @@ class Repository
     {
       $this->transport->setBranch($branch, $commit->getSha());
     }
+
+    foreach ($this->branch_removes as $branch)
+    {
+      $this->transport->removeBranch($branch);
+    }
   }
 
   public function setBranch($branch, Entity\GitObject\Commit $commit)
   {
+    // Because branch removes are executed after sets, if this branch
+    // is queued for removal, remove it from that queue.
+    if (($index = array_search($branch, $this->branch_removes)) !== false)
+    {
+      unset($this->branch_removes[$index]);
+    }
+
     $this->branch_moves[$branch] = $commit;
+  }
+
+  public function removeBranch($branch)
+  {
+    $this->branch_removes[] = $branch;
+  }
+
+  public function renameBranch($from, $to)
+  {
+    $commit = new Proxy\CommitProxy($this, $this->transport->resolveTreeish($from));
+
+    $this->setBranch($to, $commit);
+    $this->removeBranch($from);
   }
 
   public function getObject($treeish)

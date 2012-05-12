@@ -76,6 +76,13 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals('7fafbb3abfeb673be3726e657bbdbb50b606fce3', file_get_contents($this->repo.'/refs/heads/master'));
   }
 
+  public function testCanRemoveBranch()
+  {
+    $this->transport->removeBranch('master');
+
+    $this->assertFalse(is_file($this->repo.'/refs/heads/master'));
+  }
+
   public function testCanCheckWhetherIndexDataExists()
   {
     $this->assertTrue($this->transport->hasIndexData());

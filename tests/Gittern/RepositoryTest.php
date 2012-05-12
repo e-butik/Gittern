@@ -56,6 +56,47 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals(null, $this->repo->getTypeForObject(M::mock()));
   }
 
+  public function testCanRemoveBranch()
+  {
+    $transport_mock = M::mock('Gittern\Transport\TransportInterface');
+    $this->repo->setTransport($transport_mock);
+
+    $this->repo->removeBranch('foo');
+
+    $transport_mock->shouldReceive('removeBranch')->with('foo')->once();
+
+    $this->repo->flush();
+  }
+
+  public function testCanSetBranchAfterItsBeenRemoved()
+  {
+    $transport_mock = M::mock('Gittern\Transport\TransportInterface');
+    $commit_mock = M::mock('Gittern\Entity\GitObject\Commit', array('getSha' => 'f00bar'));
+    $this->repo->setTransport($transport_mock);
+
+    $this->repo->removeBranch('foo');
+    $this->repo->setBranch('foo', $commit_mock);
+
+    $transport_mock->shouldReceive('setBranch')->with('foo', 'f00bar')->once();
+
+    $this->repo->flush();
+  }
+
+  public function testCanRenameBranch()
+  {
+    $transport_mock = M::mock('Gittern\Transport\TransportInterface');
+    $this->repo->setTransport($transport_mock);
+
+    $transport_mock->shouldReceive('resolveTreeish')->with('foo')->andReturn('f00bar');
+
+    $this->repo->renameBranch('foo', 'bar');
+
+    $transport_mock->shouldReceive('removeBranch')->with('foo')->once();
+    $transport_mock->shouldReceive('setBranch')->with('bar', 'f00bar')->once();
+
+    $this->repo->flush();
+  }
+
   public function testCanSetTransport()
   {
     $this->repo->setTransport(M::mock('Gittern\Transport\TransportInterface'));

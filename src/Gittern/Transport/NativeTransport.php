@@ -81,6 +81,11 @@ class NativeTransport implements TransportInterface
     $this->writeFileRelative('refs/heads/'.$branch, $sha);
   }
 
+  public function removeBranch($branch)
+  {
+    $this->removeFileRelative('refs/heads/'.$branch);
+  }
+
   public function fetchRawObject($sha)
   {
     $first = substr($sha, 0, 2);
@@ -219,6 +224,11 @@ class NativeTransport implements TransportInterface
     }
 
     file_put_contents($path, $data);
+  }
+
+  protected function removeFileRelative($relative_path)
+  {
+    unlink($this->resolveRelativePath($relative_path));
   }
 
   protected function resolveRelativePath($relative_path)

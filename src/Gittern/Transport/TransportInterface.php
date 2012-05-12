@@ -19,6 +19,8 @@ interface TransportInterface
 
   public function setBranch($branch, $sha);
 
+  public function removeBranch($branch);
+
   public function hasIndexData();
 
   public function getIndexData();
