@@ -20,6 +20,17 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     M::close();
   }
 
+  public function testCanCheckIfObjectShouldExist()
+  {
+    $transport_mock = M::mock('Gittern\Transport\TransportInterface');
+    $this->repo->setTransport($transport_mock);
+    $transport_mock->shouldReceive('resolveTreeish')->with('foo')->andReturn('deadbeefcafe')->once();
+    $transport_mock->shouldReceive('resolveTreeish')->with('bar')->andReturn(null)->once();
+
+    $this->assertTrue($this->repo->hasObject('foo'));
+    $this->assertFalse($this->repo->hasObject('bar'));
+  }
+
   public function testCanSetAndGetHydrator()
   {
     $hydrator = M::mock('Gittern\Hydrator\HydratorInterface');

@@ -147,9 +147,19 @@ class Repository
     $this->removeBranch($from);
   }
 
+  public function hasObject($treeish)
+  {
+    return (bool)$this->transport->resolveTreeish($treeish);
+  }
+
   public function getObject($treeish)
   {
     $sha = $this->transport->resolveTreeish($treeish);
+
+    if (!$sha)
+    {
+      throw new \RuntimeException(sprintf("Couldn't find an object with identifier %s", $treeish));
+    }
 
     $raw_object = $this->transport->fetchRawObject($sha);
 
