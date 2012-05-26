@@ -79,7 +79,7 @@ class PackfileIndex
   {
     if ($prefix == 0)
     {
-      return 0;
+      return $this->getShasStart();
     }
     else
     {
