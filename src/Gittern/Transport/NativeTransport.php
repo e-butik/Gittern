@@ -88,14 +88,14 @@ class NativeTransport implements TransportInterface
 
   public function fetchRawObject($sha)
   {
-    $first = substr($sha, 0, 2);
-    $last = substr($sha, 2);
-
-    $loose_object_path = 'objects/'.$first.'/'.$last;
-
     // Unpacked case
-    if ($this->isFileRelative($loose_object_path))
+    if ($this->isLoose($sha))
     {
+      $first = substr($sha, 0, 2);
+      $last = substr($sha, 2);
+
+      $loose_object_path = 'objects/'.$first.'/'.$last;
+
       $compressed_data = $this->readFileRelative($loose_object_path);
       $uncompressed_data = @gzuncompress($compressed_data);
 
@@ -140,6 +140,16 @@ class NativeTransport implements TransportInterface
     }
 
     return null;
+  }
+
+  public function isLoose($sha)
+  {
+    $first = substr($sha, 0, 2);
+    $last = substr($sha, 2);
+
+    $loose_object_path = 'objects/'.$first.'/'.$last;
+
+    return $this->isFileRelative($loose_object_path);
   }
 
   protected function getPackfiles()
