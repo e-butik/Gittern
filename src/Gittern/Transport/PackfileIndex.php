@@ -20,7 +20,7 @@ class PackfileIndex
     $this->reader = $reader;
   }
 
-  protected function readFanoutForPrefix($prefix)
+  public function readFanoutForPrefix($prefix)
   {
     $this->reader->setOffset(self::HEADER_SIZE + $prefix * 4);
     return $this->reader->readUInt32BE();
@@ -75,7 +75,7 @@ class PackfileIndex
     return $shas;
   }
 
-  protected function getStartOffsetForPrefix($prefix)
+  public function getStartOffsetForPrefix($prefix)
   {
     if ($prefix == 0)
     {
@@ -87,13 +87,13 @@ class PackfileIndex
     }
   }
 
-  protected function getStopOffsetForPrefix($prefix)
+  public function getStopOffsetForPrefix($prefix)
   {
     $fanout = $this->readFanoutForPrefix($prefix);
     return $this->getShasStart() + ($fanout * 20);
   }
 
-  protected function getStartCounterForPrefix($prefix)
+  public function getStartCounterForPrefix($prefix)
   {
     if ($prefix == 0)
     {
