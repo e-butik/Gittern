@@ -34,7 +34,7 @@ class GitternCommitishReadOnlyAdapter extends BaseAdapter
     }
   }
 
-  public function read($key)
+  protected function getGitObjectForKey($key)
   {
     $components = explode('/', $key);
 
@@ -56,6 +56,18 @@ class GitternCommitishReadOnlyAdapter extends BaseAdapter
       break;
     }
 
+    if ($object)
+    {
+      return $object;
+    }
+
+    return null;
+  }
+
+  public function read($key)
+  {
+    $object = $this->getGitObjectForKey($key);
+
     if ($object instanceof Blob)
     {
       return $object->getContents();
@@ -71,7 +83,7 @@ class GitternCommitishReadOnlyAdapter extends BaseAdapter
 
   public function exists($key)
   {
-    return array_search($key, $this->keys()) !== false;
+    return $this->getGitObjectForKey($key) instanceOf Blob;
   }
 
   public function keys()
@@ -88,8 +100,14 @@ class GitternCommitishReadOnlyAdapter extends BaseAdapter
 
   public function checksum($key)
   {
-    $file = $this->read($key);
-    return md5($file);
+    $object = $this->getGitObjectForKey($key);
+
+    if ($object instanceof Blob)
+    {
+      return $object->getSha();
+    }
+
+    throw new \RuntimeException(sprintf('Could not read the \'%s\' file.', $key));
   }
 
   public function delete($key)

@@ -56,11 +56,18 @@ class GitternCommitishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
 
   public function testCanCheckIfKeyExists()
   {
-    $iter = new \RecursiveArrayIterator(array('foo' => array('foo/bar' => 1, 'foo/baz' => 2), 'quux' => 3));
+    $foo_tree_mock = M::mock('Gittern\Entity\GitObject\Tree');
+    $foo_node_mock = M::mock(array('getRelatedObject' => $foo_tree_mock));
+
+    $root_tree_mock = M::mock('Gittern\Entity\GitObject\Tree');
+    $root_tree_mock->shouldReceive('getNodeNamed')->with('foo')->andReturn($foo_node_mock);
+
+    $foo_tree_mock->shouldReceive('getNodeNamed')->with('bar')->andReturn(M::mock(array('getRelatedObject' => M::mock('Gittern\Entity\GitObject\Blob'))));
+    $root_tree_mock->shouldReceive('getNodeNamed')->with('quux')->andReturn(M::mock(array('getRelatedObject' => M::mock('Gittern\Entity\GitObject\Blob'))));
 
     $rp = new \ReflectionProperty('Gittern\Gaufrette\GitternCommitishReadOnlyAdapter', 'tree');
     $rp->setAccessible(true);
-    $rp->setValue($this->adapter, $iter);
+    $rp->setValue($this->adapter, $root_tree_mock);
 
     $this->assertTrue($this->adapter->exists('foo/bar'));
     $this->assertTrue($this->adapter->exists('quux'));
@@ -99,9 +106,9 @@ class GitternCommitishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
     $this->tree_mock->shouldReceive('getNodeNamed')->with('foo')->andReturn($this->tree_mock);
     $this->tree_mock->shouldReceive('getRelatedObject')->andReturn($foo_mock);
 
-    $foo_mock->shouldReceive('getContents')->andReturn('Foobar');
+    $foo_mock->shouldReceive('getSha')->andReturn('f00bar');
 
-    $this->assertEquals(md5('Foobar'), $this->adapter->checksum('foo/bar'));
+    $this->assertEquals('f00bar', $this->adapter->checksum('foo/bar'));
   }
 
   public function testMtimeReturnsCommitTime()
