@@ -26,7 +26,7 @@ class CommitProxy extends Commit
   {
     if (!$this->commit)
     {
-      $this->commit = $this->repo->getObject($this->sha);
+      $this->commit = $this->repo->getObjectBySha($this->sha);
     }
   }
 

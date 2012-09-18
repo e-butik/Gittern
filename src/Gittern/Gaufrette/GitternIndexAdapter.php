@@ -100,8 +100,14 @@ class GitternIndexAdapter extends BaseAdapter
 
   public function checksum($key)
   {
-    $file = $this->read($key);
-    return md5($file);
+    $entry = $this->getIndex()->getEntryNamed($key);
+
+    if ($entry)
+    {
+      return $entry->getBlob()->getSha();
+    }
+
+    throw new \RuntimeException(sprintf('Could not read the \'%s\' file.', $key));
   }
 
   public function delete($key)

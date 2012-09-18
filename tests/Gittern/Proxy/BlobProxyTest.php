@@ -44,7 +44,7 @@ class BlobProxyTest extends DecoratorTest
   public function testMethodIsProperlyDecorated($method_name)
   {
     $blob_mock = M::mock('Gittern\Entity\GitObject\Blob');
-    $this->repo_mock->shouldReceive('getObject')->with($this->sha)->andReturn($blob_mock);
+    $this->repo_mock->shouldReceive('getObjectBySha')->with($this->sha)->andReturn($blob_mock);
 
     $return_value = uniqid();
 

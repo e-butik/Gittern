@@ -47,7 +47,7 @@ class TreeProxyTest extends DecoratorTest
   public function testMethodIsProperlyDecorated($method_name)
   {
     $tree_mock = M::mock('Gittern\Entity\GitObject\Tree');
-    $this->repo_mock->shouldReceive('getObject')->with($this->sha)->andReturn($tree_mock);
+    $this->repo_mock->shouldReceive('getObjectBySha')->with($this->sha)->andReturn($tree_mock);
 
     $return_value = uniqid();
 
