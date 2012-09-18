@@ -161,7 +161,17 @@ class Repository
       throw new \RuntimeException(sprintf("Couldn't find an object with identifier %s", $treeish));
     }
 
+    return $this->getObjectBySha($sha);
+  }
+
+  public function getObjectBySha($sha)
+  {
     $raw_object = $this->transport->fetchRawObject($sha);
+
+    if (!$raw_object)
+    {
+      throw new \RuntimeException(sprintf("Couldn't fetch object with identifier %s", $sha));
+    }
 
     $hydrator = $this->getHydratorForType($raw_object->getType());
 

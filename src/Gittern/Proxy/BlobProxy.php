@@ -24,7 +24,7 @@ class BlobProxy extends Blob
   {
     if (!$this->blob)
     {
-      $this->blob = $this->repo->getObject($this->sha);
+      $this->blob = $this->repo->getObjectBySha($this->sha);
     }
   }
 

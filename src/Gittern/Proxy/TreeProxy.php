@@ -25,7 +25,7 @@ class TreeProxy extends Tree
   {
     if (!$this->tree)
     {
-      $this->tree = $this->repo->getObject($this->sha);
+      $this->tree = $this->repo->getObjectBySha($this->sha);
     }
   }
 
