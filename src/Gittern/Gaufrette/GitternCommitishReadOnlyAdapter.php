@@ -7,12 +7,13 @@ use Gittern\Entity\GitObject\Blob;
 use Gittern\Entity\GitObject\Commit;
 use Gittern\Entity\GitObject\Tree;
 
-use Gaufrette\Adapter\Base as BaseAdapter;
+use Gaufrette\Adapter as AdapterInterface;
+use Gaufrette\Adapter\ChecksumCalculator;
 
 /**
 * @author Magnus Nordlander
 **/
-class GitternCommitishReadOnlyAdapter extends BaseAdapter
+class GitternCommitishReadOnlyAdapter implements AdapterInterface, ChecksumCalculator
 {
   protected $repo;
   protected $commit;
@@ -118,6 +119,11 @@ class GitternCommitishReadOnlyAdapter extends BaseAdapter
   public function rename($key, $new)
   {
     throw new \RuntimeException("This adapter is read-only.");
+  }
+
+  public function isDirectory($key)
+  {
+    return $this->getGitObjectForKey($key) instanceof Tree;
   }
 
   public function supportsMetadata()

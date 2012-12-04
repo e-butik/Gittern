@@ -10,7 +10,7 @@
     },
 
     "require-dev": {
-        "knplabs/gaufrette": "*",
+        "knplabs/gaufrette": ">=0.1.2",
         "mikey179/vfsStream": "*",
         "mockery/mockery": "*"
     },
