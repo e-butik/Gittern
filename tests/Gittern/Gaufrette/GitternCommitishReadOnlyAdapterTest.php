@@ -149,4 +149,41 @@ class GitternCommitishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
   {
     $this->assertFalse($this->adapter->supportsMetadata());
   }
+
+  public function testCanListEmptyDirectory()
+  {
+    $test_dir = '';
+    $dirname = 'child_dir';
+    $filename = 'test_file.xml';
+    $foo_tree_mock = M::mock('Gittern\Entity\GitObject\Node\TreeNode');
+    $foo_tree_mock->shouldReceive('getName')->atLeast()->once()->andReturn($dirname);
+    $foo_blob_mock = M::mock('Gittern\Entity\GitObject\Node\BlobNode');
+    $foo_blob_mock->shouldReceive('getName')->atLeast()->once()->andReturn($filename);
+    $this->tree_mock->shouldReceive('getNodeNamed')->with('')->andReturn($this->tree_mock);
+    $this->tree_mock->shouldReceive('getRelatedObject')->andReturn($this->tree_mock);
+    $this->tree_mock->shouldReceive('getNodes')->atLeast()->once()->andReturn(array($foo_tree_mock, $foo_blob_mock));
+
+    $list = $this->adapter->listDirectory($test_dir);
+    $this->assertEquals(array($filename), $list['keys']);
+    $this->assertEquals(array($dirname), $list['dirs']);
+  }
+
+  public function testCanListGivenDirectory()
+  {
+      $test_dir = 'translations';
+      $filename = 'test_file.xml';
+
+      $tree_node_mock = M::mock('Gittern\Entity\GitObject\Node\TreeNode');
+      $tree_mock = M::mock('Gittern\Entity\GitObject\Tree');
+      $blob_mock = M::mock('Gittern\Entity\GitObject\Node\BlobNode');
+      $blob_mock->shouldReceive('getName')->atLeast()->once()->andReturn($filename);
+      $this->tree_mock->shouldReceive('getNodeNamed')->with($test_dir)->andReturn($tree_node_mock);
+      $tree_node_mock->shouldReceive('getRelatedObject')->andReturn($tree_mock);
+      $tree_mock->shouldReceive('getNodes')->atLeast()->once()->andReturn(array($blob_mock));
+
+      $list = $this->adapter->listDirectory($test_dir);
+      $this->assertEquals(array($filename), $list['key']);
+      $this->assertEmpty($list['dirs']);
+  }
+
 }
