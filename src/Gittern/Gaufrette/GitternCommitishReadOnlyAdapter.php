@@ -6,6 +6,8 @@ use Gittern\Repository;
 use Gittern\Entity\GitObject\Blob;
 use Gittern\Entity\GitObject\Commit;
 use Gittern\Entity\GitObject\Tree;
+use Gittern\Entity\GitObject\Node\BlobNode;
+use Gittern\Entity\GitObject\Node\TreeNode;
 
 use Gaufrette\Adapter\Base as BaseAdapter;
 
@@ -123,5 +125,24 @@ class GitternCommitishReadOnlyAdapter extends BaseAdapter
   public function supportsMetadata()
   {
     return false;
+  }
+
+  public function listDirectory($directory = '')
+  {
+      $directory_tree = $this->getGitObjectForKey($directory);
+      $files = $dirs = array();
+      foreach ($directory_tree->getNodes() as $node) {
+        if ($node instanceof BlobNode) {
+            $files[] = $node->getName();
+        }
+        if ($node instanceof TreeNode) {
+            $dirs[] = $node->getName();
+        }
+      }
+
+      return array(
+         'keys' => $files,
+         'dirs' => $dirs
+      );
   }
 }
