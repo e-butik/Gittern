@@ -47,6 +47,17 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals($desiccator, $this->repo->getDesiccatorForType('foo'));
   }
 
+  public function testHasTag()
+  {
+    $transport_mock = M::mock('Gittern\Transport\TransportInterface');
+    $this->repo->setTransport($transport_mock);
+    $transport_mock->shouldReceive('resolveTag')->with('foo')->andReturn('deadbeefcafe')->once();
+    $transport_mock->shouldReceive('resolveTag')->with('bar')->andReturn(null)->once();
+
+    $this->assertTrue($this->repo->hasTag('foo'));
+    $this->assertFalse($this->repo->hasTag('bar'));
+  }
+
   public function testCanGetTypeForBlob()
   {
     $this->assertEquals('blob', $this->repo->getTypeForObject(M::mock('Gittern\Entity\GitObject\Blob')));

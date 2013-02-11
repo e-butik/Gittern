@@ -44,6 +44,11 @@ class NativeTransport implements TransportInterface
     return $this->resolveRef('heads/'.$head_name);
   }
 
+  public function resolveTag($tag_name)
+  {
+    return $this->resolveRef("tags/{$tag_name}");
+  }
+
   public function resolveRemote($remote_name)
   {
     return $this->resolveRef('remotes/'.$remote_name);
