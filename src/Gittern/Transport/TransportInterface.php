@@ -15,6 +15,8 @@ interface TransportInterface
 
   public function resolveTreeish($treeish);
 
+  public function resolveTag($tag_name);
+
   public function resolveHead($head_name);
 
   public function setBranch($branch, $sha);

@@ -104,7 +104,7 @@ class Repository
 
   public function flush()
   {
-    foreach ($this->unflushed_objects as $sha => $raw_object) 
+    foreach ($this->unflushed_objects as $sha => $raw_object)
     {
       $this->transport->putRawObject($raw_object);
     }
@@ -145,6 +145,11 @@ class Repository
 
     $this->setBranch($to, $commit);
     $this->removeBranch($from);
+  }
+
+  public function hasTag($tag)
+  {
+    return (bool)$this->transport->resolveTag($tag);
   }
 
   public function hasObject($treeish)
