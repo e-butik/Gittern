@@ -164,4 +164,27 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
 
     file_put_contents($path, $data);
   }
+
+  /**
+   * Test to see so a tag can be resolved
+   *
+   * @return void
+   */
+  public function testCanResoveTag()
+  {
+    $this->assertEquals(
+      '0c634a2539363d4404761cd990ccac26c694f000',
+      $this->transport->resolveTag('v0.0.0')
+    );
+  }
+
+  /**
+   * Test to ensure no such tag resolves to false.
+   *
+   * @return void
+   */
+  public function testNoSuchTag()
+  {
+    $this->assertFalse($this->transport->resolveTag('no_such_tag'));
+  }
 }
