@@ -24,6 +24,12 @@ class NativeTransport implements TransportInterface
       return $treeish;
     }
 
+    // Maybe it's a tag?
+    if ($tag = $this->resolveTag($treeish))
+    {
+      return $tag;
+    }
+
     // Maybe it's a branch?
     if ($branch_sha = $this->resolveHead($treeish))
     {
@@ -42,6 +48,11 @@ class NativeTransport implements TransportInterface
   public function resolveHead($head_name)
   {
     return $this->resolveRef('heads/'.$head_name);
+  }
+
+  public function resolveTag($tag_name)
+  {
+    return $this->resolveRef("tags/{$tag_name}");
   }
 
   public function resolveRemote($remote_name)
