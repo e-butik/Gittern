@@ -24,6 +24,12 @@ class NativeTransport implements TransportInterface
       return $treeish;
     }
 
+    // Maybe it's a tag?
+    if ($tag = $this->resolveTag($treeish))
+    {
+      return $tag;
+    }
+
     // Maybe it's a branch?
     if ($branch_sha = $this->resolveHead($treeish))
     {

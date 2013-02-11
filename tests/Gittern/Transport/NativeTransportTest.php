@@ -178,6 +178,14 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
     );
   }
 
+  public function testResolveTreeishTag()
+  {
+    $this->assertEquals(
+      '0c634a2539363d4404761cd990ccac26c694f000',
+      $this->transport->resolveTreeish('v0.0.0')
+    );
+  }
+
   /**
    * Test to ensure no such tag resolves to false.
    *
