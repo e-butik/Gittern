@@ -6,12 +6,13 @@ use Gittern\Entity\IndexEntry;
 use Gittern\Repository;
 use Gittern\Entity\GitObject\Blob;
 
-use Gaufrette\Adapter\Base as BaseAdapter;
+use Gaufrette\Adapter as AdapterInterface;
+use Gaufrette\Adapter\ChecksumCalculator;
 
 /**
 * @author Magnus Nordlander
 **/
-class GitternIndexAdapter extends BaseAdapter
+class GitternIndexAdapter implements AdapterInterface, ChecksumCalculator
 {
   protected $repo;
   protected $autoflush = true;
@@ -130,6 +131,20 @@ class GitternIndexAdapter extends BaseAdapter
     }
 
     throw new \RuntimeException(sprintf('Could not read the \'%s\' file.', $key));
+  }
+
+  public function isDirectory($directory_key)
+  {
+    $directory_key = trim($directory_key, '/');
+    foreach ($this->getKeys() as $key)
+    {
+      if (strpos($key, $directory_key.'/') === 0)
+      {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   public function supportsMetadata()
