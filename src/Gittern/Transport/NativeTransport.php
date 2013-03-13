@@ -4,6 +4,8 @@ namespace Gittern\Transport;
 
 use Iodophor\Io\FileReader;
 
+use Gittern\Exception\NativeTransport\InvalidObjectException;
+
 /**
 * @author Magnus Nordlander
 **/
@@ -112,12 +114,12 @@ class NativeTransport implements TransportInterface
 
       if ($uncompressed_data === false)
       {
-        throw new \RuntimeException(sprintf('Couldn\'t decompress Git object in %s.', $this->resolveRelativePath($loose_object_path)));
+        throw new InvalidObjectException(sprintf('Couldn\'t decompress Git object in %s.', $this->resolveRelativePath($loose_object_path)));
       }
 
       if (strlen($uncompressed_data) == 0)
       {
-        throw new \RuntimeException("Attempting to hydrate empty object");
+        throw new InvalidObjectException("Attempting to hydrate empty object");
       }
 
       sscanf($uncompressed_data, "%s %d\0", $type, $length);
@@ -128,12 +130,12 @@ class NativeTransport implements TransportInterface
 
       if ($raw_object->getLength() !== $length)
       {
-        throw new \RuntimeException(sprintf("Length derived from git object header (%d) does not match actual length (%d)", $offset+$length, strlen($uncompressed_data)));
+        throw new InvalidObjectException(sprintf("Length derived from git object header (%d) does not match actual length (%d)", $offset+$length, strlen($uncompressed_data)));
       }
 
       if ($raw_object->getSha() != $sha)
       {
-        throw new \RuntimeException(sprintf("Unexpected RawObject sha, expected %s, was %s", $sha, $raw_object->getSha()));
+        throw new InvalidObjectException(sprintf("Unexpected RawObject sha, expected %s, was %s", $sha, $raw_object->getSha()));
       }
 
       return $raw_object;

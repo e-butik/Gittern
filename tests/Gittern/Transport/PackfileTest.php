@@ -44,7 +44,7 @@ class PackfileTest extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @expectedException LogicException
+   * @expectedException BadMethodCallException
    * @expectedExceptionMessage hasSha without index is not implemented yet.
    */
   public function testCantCheckIfPackfileHasShaWithoutIndex()
@@ -91,7 +91,7 @@ class PackfileTest extends \PHPUnit_Framework_TestCase
 
   /**
    * @covers Gittern\Transport\Packfile::getRawObjectForSha
-   * @expectedException LogicException
+   * @expectedException BadMethodCallException
    * @expectedExceptionMessage getRawObjectForSha without index is not implemented yet.
    */
   public function testCantGetObjectForShaWithoutIndex()

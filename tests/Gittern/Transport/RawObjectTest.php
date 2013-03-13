@@ -33,7 +33,7 @@ class RawObjectTest extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @expectedException RuntimeException
+   * @expectedException Gittern\Exception\InvalidTypeException
    * @expectedExceptionMessage Numeric type 0x2a unknown
    */
   public function testCannotConstructWithOtherNumericType()

@@ -2,6 +2,8 @@
 
 namespace Gittern\Transport;
 
+use Gittern\Exception\NativeTransport\IndexEntryNotFoundException;
+
 use Iodophor\Io\Reader;
 
 /**
@@ -125,7 +127,7 @@ class PackfileIndex
       $counter++;
     } while ($read_prefix <= $prefix && $this->reader->getOffset() < $stop);
 
-    throw new \RuntimeException("SHA $sha is not in packfile index");
+    throw new IndexEntryNotFoundException("SHA $sha is not in packfile index");
   }
 
   public function getCrcForSha($sha)

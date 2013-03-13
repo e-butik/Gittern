@@ -2,6 +2,8 @@
 
 namespace Gittern\Transport;
 
+use Gittern\Exception\NativeTransport\InvalidPackfileException;
+
 use Iodophor\Io\Reader;
 
 /**
@@ -43,7 +45,7 @@ class Packfile
     }
     else
     {
-      throw new \LogicException("hasSha without index is not implemented yet.");
+      throw new \BadMethodCallException("hasSha without index is not implemented yet.");
     }
   }
 
@@ -57,14 +59,14 @@ class Packfile
       // SHA string comparison has to be with ===
       if (!$raw_object->getSha() === $sha)
       {
-        throw new \RuntimeException(sprintf("Unexpected RawObject sha, expected %s, was %s", $sha, $raw_object->getSha()));
+        throw new InvalidPackfileException(sprintf("Unexpected RawObject sha, expected %s, was %s", $sha, $raw_object->getSha()));
       }
 
       return $raw_object;
     }
     else
     {
-      throw new \LogicException("getRawObjectForSha without index is not implemented yet.");
+      throw new \BadMethodCallException("getRawObjectForSha without index is not implemented yet.");
     }
   }
 
@@ -98,7 +100,7 @@ class Packfile
 
       if (strlen($delta) != $size)
       {
-        throw new \RuntimeException(sprintf("Unexpected delta length, expected %d, was %d", $size, strlen($delta)));
+        throw new InvalidPackfileException(sprintf("Unexpected delta length, expected %d, was %d", $size, strlen($delta)));
       }
 
       $data = $this->patchDelta($delta, $base_object);
@@ -124,7 +126,7 @@ class Packfile
 
       if (strlen($delta) != $size)
       {
-        throw new \RuntimeException(sprintf("Unexpected delta length, expected %d, was %d", $size, strlen($delta)));
+        throw new InvalidPackfileException(sprintf("Unexpected delta length, expected %d, was %d", $size, strlen($delta)));
       }
 
       $base_object = $this->getRawObjectAtOffset($base_offset);
@@ -142,7 +144,7 @@ class Packfile
 
       if ($raw_object->getLength() != $size)
       {
-        throw new \RuntimeException(sprintf("Unexpected RawObject length, expected %d, was %d", $size, $raw_object->getLength()));
+        throw new InvalidPackfileException(sprintf("Unexpected RawObject length, expected %d, was %d", $size, $raw_object->getLength()));
       }
     }
 
@@ -160,7 +162,7 @@ class Packfile
 
     if ($src_size != strlen($base))
     {
-      throw new \RuntimeException("Packfile delta is invalid");
+      throw new InvalidPackfileException("Packfile delta is invalid");
     }
 
     list($dest_size, $pos) = $this->patchDeltaHeaderSize($delta, $pos);
@@ -214,7 +216,7 @@ class Packfile
       }
       else
       {
-        throw new \RuntimeException("Packfile delta is invalid");
+        throw new InvalidPackfileException("Packfile delta is invalid");
       }
     }
 
@@ -233,7 +235,7 @@ class Packfile
       $c = ord($delta[$pos]);
       if (!$c)
       {
-        throw new \RuntimeException("Packfile delta header is invalid");
+        throw new InvalidPackfileException("Packfile delta header is invalid");
       }
       $pos++;
       $size |= (($c & 0x7f) << $shift);

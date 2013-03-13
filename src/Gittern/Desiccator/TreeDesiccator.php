@@ -5,6 +5,8 @@ namespace Gittern\Desiccator;
 use Gittern\Entity\GitObject\Tree;
 use Gittern\Transport\RawObject;
 
+use Gittern\Exception\NotPersistedException;
+
 use Iodophor\Io\StringWriter;
 
 /**
@@ -25,7 +27,7 @@ class TreeDesiccator
       $sha = $node->getRelatedObject()->getSha();
       if (strlen($sha) != 40)
       {
-        throw new \RuntimeException("Object referred to by node named ".$node->getName()." is not persisted yet.");
+        throw new NotPersistedException("Object referred to by node named ".$node->getName()." is not persisted yet.");
       }
       $writer->writeHHex($sha);
     }

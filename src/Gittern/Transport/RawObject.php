@@ -2,6 +2,8 @@
 
 namespace Gittern\Transport;
 
+use Gittern\Exception\InvalidTypeException;
+
 /**
 * @author Magnus Nordlander
 **/
@@ -28,7 +30,7 @@ class RawObject
         return 'tag';
     }
 
-    throw new \RuntimeException(sprintf("Numeric type 0x%x unknown", $type));
+    throw new InvalidTypeException(sprintf("Numeric type 0x%x unknown", $type));
   }
 
   public function __construct($type, $data)

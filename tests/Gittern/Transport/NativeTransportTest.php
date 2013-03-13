@@ -123,7 +123,7 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @expectedException        RuntimeException
+   * @expectedException        Gittern\Exception\NativeTransport\InvalidObjectException
    * @expectedExceptionMessage Attempting to hydrate empty object
    */
   public function testCantReadEmptyLooseObject()
@@ -134,7 +134,7 @@ class NativeTransportTest extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @expectedException        RuntimeException
+   * @expectedException        Gittern\Exception\NativeTransport\InvalidObjectException
    * @expectedExceptionMessage Length derived from git object header (109) does not match actual length (10)
    */
   public function testCantLooseObjectWithInvalidLength()

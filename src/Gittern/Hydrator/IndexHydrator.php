@@ -7,6 +7,9 @@ use Gittern\Entity\Index;
 use Gittern\Entity\IndexEntry;
 use Gittern\Proxy\BlobProxy;
 
+use Gittern\Exception\IndexVersionException;
+use Gittern\Exception\ChecksumException;
+
 use Iodophor\Io\StringReader;
 use Iodophor\Io\Reader;
 
@@ -34,7 +37,7 @@ class IndexHydrator
 
     if ($signature != Index::SIGNATURE || $version != Index::VERSION)
     {
-      throw new \Exception("IndexHydrator only supports indexes with signature ".Index::SIGNATURE." and version ".Index::VERSION);
+      throw new IndexVersionException("IndexHydrator only supports indexes with signature ".Index::SIGNATURE." and version ".Index::VERSION);
     }
 
     $entries = $reader->readUInt32BE();
@@ -84,7 +87,7 @@ class IndexHydrator
       }
       else
       {
-        throw new \Exception("IndexHydrator doesn't support the mandatory ".$name." extension");
+        throw new IndexVersionException("IndexHydrator doesn't support the mandatory ".$name." extension");
       }
     }
 
@@ -97,7 +100,7 @@ class IndexHydrator
 
     if ($checksum != $calculated_sha)
     {
-      throw new \Exception("Index checksum does not match");
+      throw new ChecksumException("Index checksum does not match");
     }
 
     return $index;

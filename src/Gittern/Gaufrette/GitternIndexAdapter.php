@@ -9,6 +9,9 @@ use Gittern\Entity\GitObject\Blob;
 use Gaufrette\Adapter as AdapterInterface;
 use Gaufrette\Adapter\ChecksumCalculator;
 
+use Gittern\Exception\EntityNotFoundException;
+use Gittern\Exception\InvalidTypeException;
+
 /**
 * @author Magnus Nordlander
 **/
@@ -40,12 +43,7 @@ class GitternIndexAdapter implements AdapterInterface, ChecksumCalculator
   {
     $entry = $this->getIndex()->getEntryNamed($key);
 
-    if ($entry)
-    {
-      return $entry->getBlob()->getContents();
-    }
-
-    throw new \RuntimeException(sprintf('Could not read the \'%s\' file.', $key));
+    return $entry->getBlob()->getContents();
   }
 
   public function write($key, $content, array $metadata = null)
@@ -91,24 +89,14 @@ class GitternIndexAdapter implements AdapterInterface, ChecksumCalculator
   {
     $entry = $this->getIndex()->getEntryNamed($key);
 
-    if ($entry)
-    {
-      return (int)$entry->getMtime();
-    }
-
-    throw new \RuntimeException(sprintf('Could not read the \'%s\' file.', $key));
+    return (int)$entry->getMtime();
   }
 
   public function checksum($key)
   {
     $entry = $this->getIndex()->getEntryNamed($key);
 
-    if ($entry)
-    {
-      return $entry->getBlob()->getSha();
-    }
-
-    throw new \RuntimeException(sprintf('Could not read the \'%s\' file.', $key));
+    return $entry->getBlob()->getSha();
   }
 
   public function delete($key)
@@ -121,16 +109,10 @@ class GitternIndexAdapter implements AdapterInterface, ChecksumCalculator
   {
     $entry = $this->getIndex()->getEntryNamed($key);
 
-    if ($entry)
-    {
-      $entry->setName($new);
-      $this->getIndex()->removeEntryNamed($key);
-      $this->getIndex()->addEntry($entry);
-      $this->flushIfSupposedTo();
-      return;
-    }
-
-    throw new \RuntimeException(sprintf('Could not read the \'%s\' file.', $key));
+    $entry->setName($new);
+    $this->getIndex()->removeEntryNamed($key);
+    $this->getIndex()->addEntry($entry);
+    $this->flushIfSupposedTo();
   }
 
   public function isDirectory($directory_key)

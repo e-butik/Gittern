@@ -42,7 +42,7 @@ class PackfileIndexTest extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @expectedException RuntimeException
+   * @expectedException Gittern\Exception\NativeTransport\IndexEntryNotFoundException
    * @expectedExceptionMessage SHA deadbeefcafebabefacebadc0ffeebadf00dcafe is not in packfile index
    */
   public function testCantGetCrcForNonExistantSha()
@@ -56,7 +56,7 @@ class PackfileIndexTest extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @expectedException RuntimeException
+   * @expectedException Gittern\Exception\NativeTransport\IndexEntryNotFoundException
    * @expectedExceptionMessage SHA deadbeefcafebabefacebadc0ffeebadf00dcafe is not in packfile index
    */
   public function testCantGetPackfileOffsetForNonExistantSha()

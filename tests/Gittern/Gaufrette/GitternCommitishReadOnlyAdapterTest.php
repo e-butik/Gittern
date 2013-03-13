@@ -31,7 +31,7 @@ class GitternCommitishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @expectedException RuntimeException
+   * @expectedException Gittern\Exception\EntityNotFoundException
    * @expectedExceptionMessage Could not resolve commitish to a commit.
    */
   public function testCantConstructWithOtherRef()
@@ -90,8 +90,8 @@ class GitternCommitishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @expectedException RuntimeException
-   * @expectedExceptionMessage Could not read the 'foo/bar' file.
+   * @expectedException Gittern\Exception\InvalidTypeException
+   * @expectedExceptionMessage 'foo/bar' is not a blob.
    */
   public function testCantReadNonExistingFile()
   {

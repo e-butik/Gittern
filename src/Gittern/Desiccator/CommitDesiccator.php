@@ -8,6 +8,8 @@ use Gittern\Entity\GitObject\User;
 
 use Gittern\Transport\RawObject;
 
+use Gittern\Exception\NotPersistedException;
+
 use Iodophor\Io\StringWriter;
 use Iodophor\Io\Writer;
 
@@ -22,7 +24,7 @@ class CommitDesiccator
 
     if (strlen($sha) != 40)
     {
-      throw new \RuntimeException("Tree referred to by commit is not persisted yet.");
+      throw new NotPersistedException("Tree referred to by commit is not persisted yet.");
     }
 
     $writer->writeString8("tree ");
@@ -36,7 +38,7 @@ class CommitDesiccator
 
     if (strlen($sha) != 40)
     {
-      throw new \RuntimeException("Parent referred to by commit is not persisted yet.");
+      throw new NotPersistedException("Parent referred to by commit is not persisted yet.");
     }
 
     $writer->writeString8("parent ");

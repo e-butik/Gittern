@@ -2,9 +2,7 @@
 
 namespace Gittern\Exception;
 
-use RuntimeException;
-
-class TreeParseException extends RuntimeException
+class TreeParseException extends \RuntimeException
 {
 
 }

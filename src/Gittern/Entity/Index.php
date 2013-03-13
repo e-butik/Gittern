@@ -6,6 +6,9 @@ use Gittern\Entity\GitObject\Tree;
 use Gittern\Entity\GitObject\Node\TreeNode;
 use Gittern\Entity\GitObject\Node\BlobNode;
 
+use Gittern\Exception\EntityNotFoundException;
+use Gittern\Exception\InvalidTypeException;
+
 /**
 * @author Magnus Nordlander
 **/
@@ -38,7 +41,7 @@ class Index
   {
     if (!isset($this->entries[$name]))
     {
-      throw new \OutOfBoundsException('No entry named '.$name);
+      throw new EntityNotFoundException('No entry named '.$name);
     }
     return $this->entries[$name];
   }
@@ -50,7 +53,7 @@ class Index
       unset($this->entries[$name]);
       return;
     }
-    throw new \OutOfBoundsException('No entry named '.$name);
+    throw new EntityNotFoundException('No entry named '.$name);
   }
 
   public function clear()
@@ -86,7 +89,7 @@ class Index
         $node = $current_tree->getNodeNamed($subtree_name);
         if (!($node instanceof TreeNode))
         {
-          throw new RuntimeException("Blob path $name specifies another blob as parent tree, which is impossible");
+          throw new InvalidTypeException("Blob path $name specifies another blob as parent tree, which is impossible");
         }
 
         $current_tree = $node->getTree();

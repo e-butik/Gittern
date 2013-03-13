@@ -12,6 +12,9 @@ use Gittern\Entity\GitObject\Node\TreeNode;
 use Gaufrette\Adapter as AdapterInterface;
 use Gaufrette\Adapter\ChecksumCalculator;
 
+use Gittern\Exception\EntityNotFoundException;
+use Gittern\Exception\InvalidTypeException;
+
 /**
 * @author Magnus Nordlander
 **/
@@ -33,7 +36,7 @@ class GitternCommitishReadOnlyAdapter implements AdapterInterface, ChecksumCalcu
     }
     else
     {
-      throw new \RuntimeException("Could not resolve commitish to a commit.");
+      throw new EntityNotFoundException("Could not resolve commitish to a commit.");
     }
   }
 
@@ -75,8 +78,14 @@ class GitternCommitishReadOnlyAdapter implements AdapterInterface, ChecksumCalcu
     {
       return $object->getContents();
     }
-
-    throw new \RuntimeException(sprintf('Could not read the \'%s\' file.', $key));
+    else if ($object == null)
+    {
+      throw new EntityNotFoundException(sprintf('Could not find the \'%s\' file.', $key));
+    }
+    else
+    {
+      throw new InvalidTypeException(sprintf('\'%s\' is not a blob.', $key));
+    }
   }
 
   public function write($key, $content, array $metadata = null)
@@ -109,8 +118,14 @@ class GitternCommitishReadOnlyAdapter implements AdapterInterface, ChecksumCalcu
     {
       return $object->getSha();
     }
-
-    throw new \RuntimeException(sprintf('Could not read the \'%s\' file.', $key));
+    else if ($object == null)
+    {
+      throw new EntityNotFoundException(sprintf('Could not find the \'%s\' file.', $key));
+    }
+    else
+    {
+      throw new InvalidTypeException(sprintf('\'%s\' is not a blob.', $key));
+    }
   }
 
   public function delete($key)

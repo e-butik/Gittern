@@ -6,6 +6,8 @@ use Gittern\Entity\Index;
 use Gittern\Transport\RawObject;
 use Gittern\Transport\TransportInterface;
 
+use Gittern\Exception\EntityNotFoundException;
+
 /**
 * @author Magnus Nordlander
 **/
@@ -163,7 +165,7 @@ class Repository
 
     if (!$sha)
     {
-      throw new \RuntimeException(sprintf("Couldn't find an object with identifier %s", $treeish));
+      throw new EntityNotFoundException(sprintf("Couldn't find an object with identifier %s", $treeish));
     }
 
     return $this->getObjectBySha($sha);
@@ -175,7 +177,7 @@ class Repository
 
     if (!$raw_object)
     {
-      throw new \RuntimeException(sprintf("Couldn't fetch object with identifier %s", $sha));
+      throw new EntityNotFoundException(sprintf("Couldn't fetch object with identifier %s", $sha));
     }
 
     $hydrator = $this->getHydratorForType($raw_object->getType());

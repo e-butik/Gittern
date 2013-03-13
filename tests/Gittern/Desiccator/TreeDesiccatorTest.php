@@ -35,7 +35,7 @@ class TreeDesiccatorTest extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @expectedException RuntimeException
+   * @expectedException Gittern\Exception\NotPersistedException
    * @expectedExceptionMessage Object referred to by node named abacus is not persisted yet.
    */
   public function testCantDesiccateTreeWithoutAllRelationsPersisted()
