@@ -28,4 +28,9 @@ class BlobTest extends \PHPUnit_Framework_TestCase
     $this->blob->setContents('foobar');
     $this->assertEquals('foobar', $this->blob->getContents());
   }
+
+  public function testContentsAreAlwaysStrings()
+  {
+    $this->assertSame('', $this->blob->getContents());
+  }
 }

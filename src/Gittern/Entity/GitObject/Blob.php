@@ -23,11 +23,11 @@ class Blob
 
   public function setContents($contents)
   {
-    $this->contents = $contents;
+    $this->contents = (string) $contents;
   }
 
   public function getContents()
   {
-    return $this->contents;
+    return (string) $this->contents;
   }
 }
