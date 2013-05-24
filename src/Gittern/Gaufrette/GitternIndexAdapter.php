@@ -118,7 +118,7 @@ class GitternIndexAdapter implements AdapterInterface, ChecksumCalculator
   public function isDirectory($directory_key)
   {
     $directory_key = trim($directory_key, '/');
-    foreach ($this->getKeys() as $key)
+    foreach ($this->keys() as $key)
     {
       if (strpos($key, $directory_key.'/') === 0)
       {
