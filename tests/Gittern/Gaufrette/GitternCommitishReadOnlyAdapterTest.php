@@ -163,7 +163,7 @@ class GitternCommitishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
     $this->tree_mock->shouldReceive('getRelatedObject')->andReturn($this->tree_mock);
     $this->tree_mock->shouldReceive('getNodes')->atLeast()->once()->andReturn(array($foo_tree_mock, $foo_blob_mock));
 
-    $list = $this->adapter->listDirectory($test_dir);
+    $list = $this->adapter->listKeys($test_dir);
     $this->assertEquals(array($filename), $list['keys']);
     $this->assertEquals(array($dirname), $list['dirs']);
   }
@@ -181,9 +181,14 @@ class GitternCommitishReadOnlyAdapterTest extends \PHPUnit_Framework_TestCase
       $tree_node_mock->shouldReceive('getRelatedObject')->andReturn($tree_mock);
       $tree_mock->shouldReceive('getNodes')->atLeast()->once()->andReturn(array($blob_mock));
 
-      $list = $this->adapter->listDirectory($test_dir);
+      $list = $this->adapter->listKeys($test_dir);
       $this->assertEquals(array($filename), $list['keys']);
       $this->assertEmpty($list['dirs']);
   }
+
+    public function testAdapterIsInstanceOfListKeysAware()
+    {
+        $this->assertInstanceOf('Gaufrette\Adapter\ListKeysAware', $this->adapter);
+    }
 
 }

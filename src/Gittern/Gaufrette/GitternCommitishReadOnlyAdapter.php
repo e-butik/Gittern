@@ -11,6 +11,7 @@ use Gittern\Entity\GitObject\Node\TreeNode;
 
 use Gaufrette\Adapter as AdapterInterface;
 use Gaufrette\Adapter\ChecksumCalculator;
+use Gaufrette\Adapter\ListKeysAware;
 
 use Gittern\Exception\EntityNotFoundException;
 use Gittern\Exception\InvalidTypeException;
@@ -18,7 +19,7 @@ use Gittern\Exception\InvalidTypeException;
 /**
 * @author Magnus Nordlander
 **/
-class GitternCommitishReadOnlyAdapter implements AdapterInterface, ChecksumCalculator
+class GitternCommitishReadOnlyAdapter implements AdapterInterface, ChecksumCalculator, ListKeysAware
 {
   protected $repo;
   protected $commit;
@@ -148,7 +149,7 @@ class GitternCommitishReadOnlyAdapter implements AdapterInterface, ChecksumCalcu
     return false;
   }
 
-  public function listDirectory($directory = '')
+  public function listKeys($directory = '')
   {
       $directory_tree = $this->getGitObjectForKey($directory);
       $files = $dirs = array();
